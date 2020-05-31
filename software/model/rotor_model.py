@@ -1,0 +1,95 @@
+# rotor
+
+def rotor_model(oEditor, rotor_params_name_list):
+    print('Draw rotor model')
+
+    Dro, Dri, pole, rotor_type, mag_emb, mag_thick, mag_width, rotor_bridge, rotor_rib = rotor_params_name_list
+
+    oEditor.CreateUserDefinedPart(
+        [
+            "NAME:UserDefinedPrimitiveParameters",
+            "DllName:="		, "RMxprt/PMCore.dll",
+            "Version:="		, "12.0",
+            "NoOfParameters:="	, 13,
+            "Library:="		, "syslib",
+            [
+                "NAME:ParamVector",
+                [
+                    "NAME:Pair",
+                    "Name:="		, "DiaGap",
+                    "Value:="		, Dro
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "DiaYoke",
+                    "Value:="		, Dri
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "Length",
+                    "Value:="		, "0mm"
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "Poles",
+                    "Value:="		, pole
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "PoleType",
+                    "Value:="		, rotor_type
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "Embrace",
+                    "Value:="		, mag_emb
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "ThickMag",
+                    "Value:="		, mag_thick
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "WidthMag",
+                    "Value:="		, mag_width
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "Offset",
+                    "Value:="		, "0mm"
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "Bridge",
+                    "Value:="		, rotor_bridge
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "Rib",
+                    "Value:="		, rotor_rib
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "LenRegion",
+                    "Value:="		, "200mm"
+                ],
+                [
+                    "NAME:Pair",
+                    "Name:="		, "InfoCore",
+                    "Value:="		, "0"
+                ]
+            ]
+        ], 
+        [
+            "NAME:Attributes",
+            "Name:="		, "rotor",
+            "Flags:="		, "",
+            "Color:="		, "(143 175 143)",
+            "Transparency:="	, 0,
+            "PartCoordinateSystem:=", "Global",
+            "UDMId:="		, "",
+            "MaterialValue:="	, "\"35CS250_20190702\"",
+            "SolveInside:="		, True
+        ])
+
