@@ -1,9 +1,7 @@
 # Stator
 
-def stator_model(oEditor, stator_params_name_list):
+def stator_model(oEditor, stator_params):
     print('Draw Stator model')
-
-    Dsi, Dso, slot, Hs0, Hs1, Hs2, Bs0, Bs1, Bs2, Rs = stator_params_name_list
 
     oEditor.CreateUserDefinedPart(
         [
@@ -17,12 +15,12 @@ def stator_model(oEditor, stator_params_name_list):
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaGap",
-                    "Value:="		, Dsi
+                    "Value:="		, stator_params["Dsi"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaYoke",
-                    "Value:="		, Dso
+                    "Value:="		, stator_params["Dso"]
                 ],
                 [
                     "NAME:Pair",
@@ -37,7 +35,7 @@ def stator_model(oEditor, stator_params_name_list):
                 [
                     "NAME:Pair",
                     "Name:="		, "Slots",
-                    "Value:="		, slot
+                    "Value:="		, stator_params["slot"]
                 ],
                 [
                     "NAME:Pair",
@@ -47,7 +45,7 @@ def stator_model(oEditor, stator_params_name_list):
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs0",
-                    "Value:="		, Hs0
+                    "Value:="		, stator_params["Hs0"]
                 ],
                 [
                     "NAME:Pair",
@@ -57,32 +55,32 @@ def stator_model(oEditor, stator_params_name_list):
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs1",
-                    "Value:="		, Hs1
+                    "Value:="		, stator_params["Hs1"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs2",
-                    "Value:="		, Hs2
+                    "Value:="		, stator_params["Hs2"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs0",
-                    "Value:="		, Bs0
+                    "Value:="		, stator_params["Bs0"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs1",
-                    "Value:="		, Bs1
+                    "Value:="		, stator_params["Bs1"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs2",
-                    "Value:="		, Bs2
+                    "Value:="		, stator_params["Bs2"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Rs",
-                    "Value:="		, Rs
+                    "Value:="		, stator_params["Rs"]
                 ],
                 [
                     "NAME:Pair",
@@ -110,7 +108,7 @@ def stator_model(oEditor, stator_params_name_list):
                     "Value:="		, "0"
                 ]
             ]
-        ], 
+        ],
         [
             "NAME:Attributes",
             "Name:="		, "stator",

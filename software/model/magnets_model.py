@@ -1,10 +1,10 @@
 # magmets
 
 
-def magnets_model(oEditor, rotor_pole, rotor_params_name_list):
+def magnets_model(oEditor, rotor_params):
     print('Draw magnet model and set vector')
 
-    Dro, Dri, pole, rotor_type, mag_emb, mag_thick, mag_width, rotor_bridge, rotor_rib = rotor_params_name_list
+    rotor_pole = int(rotor_params["pole"])
 
     oEditor.CreateUserDefinedPart(
         [
@@ -18,12 +18,12 @@ def magnets_model(oEditor, rotor_pole, rotor_params_name_list):
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaGap",
-                    "Value:="		, Dro
+                    "Value:="		, rotor_params["Dro"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaYoke",
-                    "Value:="		, Dri
+                    "Value:="		, rotor_params["Dri"]
                 ],
                 [
                     "NAME:Pair",
@@ -33,27 +33,27 @@ def magnets_model(oEditor, rotor_pole, rotor_params_name_list):
                 [
                     "NAME:Pair",
                     "Name:="		, "Poles",
-                    "Value:="		, pole
+                    "Value:="		, rotor_params["pole"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "PoleType",
-                    "Value:="		, rotor_type
+                    "Value:="		, rotor_params["rotor_type"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Embrace",
-                    "Value:="		, mag_emb
+                    "Value:="		, rotor_params["mag_emb"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "ThickMag",
-                    "Value:="		, mag_thick
+                    "Value:="		, rotor_params["mag_thick"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "WidthMag",
-                    "Value:="		, mag_width
+                    "Value:="		, rotor_params["mag_width"]
                 ],
                 [
                     "NAME:Pair",
@@ -63,12 +63,12 @@ def magnets_model(oEditor, rotor_pole, rotor_params_name_list):
                 [
                     "NAME:Pair",
                     "Name:="		, "Bridge",
-                    "Value:="		, rotor_bridge
+                    "Value:="		, rotor_params["rotor_bridge"]
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Rib",
-                    "Value:="		, rotor_rib
+                    "Value:="		, rotor_params["rotor_rib"]
                 ],
                 [
                     "NAME:Pair",

@@ -4,9 +4,12 @@ stator_params = {
     "slot": "12",
     "Hs0": "1mm",
     "Hs1": "1mm",
-    "Hs2": "9mm",
     "Bs0": "4mm",
-    "Bs1": "10.8mm",
-    "Bs2": "15.8mm",
-    "Rs" : "1mm"
+    "Rs" : "1mm",
+    "Wt" : "10mm",
+    "Wy" : "9mm",
+    "Hs2": "Dso/2-Wy-Hs1-Hs0-Dsi/2",
+    "Bs1": "((Dsi + (Hs0 + Hs1)*2) *pi -12*Wt)/12",
+    "Bs2": "((Dsi + (Hs0 + Hs1 + Hs2)*2) *pi -12*Wt)/12",
+    "slot_area": "((Bs1+Bs2)/1mm)/2*(Hs2/1mm)+((Bs0+Bs1)/1mm)/2*(Hs1/1mm)+(Bs2/1mm)*(Rs/1mm)",
 }

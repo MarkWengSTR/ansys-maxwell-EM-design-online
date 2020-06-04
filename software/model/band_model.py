@@ -1,9 +1,12 @@
 def band_model(oDesign, oEditor, band_name_list):
-    print('Draw and set band model')
+    print('Draw and set band model and ironloss')
 
     oBoundaryModule = oDesign.GetModule("BoundarySetup")
     oModelModule = oDesign.GetModule("ModelSetup")
     rotaband, outerband = band_name_list
+
+    def iron_loss_setup():
+        oBoundaryModule.SetCoreLoss(["stator", "rotor"], False)
 
     def outerband_edge_id_list():
         edge_list = oEditor.GetEdgeIDsFromObject(outerband)
@@ -21,7 +24,7 @@ def band_model(oDesign, oEditor, band_name_list):
                 "Radius:="		, "outer_band_D/2",
                 "WhichAxis:="		, "Z",
                 "NumSegments:="		, "0"
-            ], 
+            ],
             [
                 "NAME:Attributes",
                 "Name:="		, outerband,
@@ -33,6 +36,7 @@ def band_model(oDesign, oEditor, band_name_list):
                 "MaterialValue:="	, "\"vacuum\"",
                 "SolveInside:="		, True
             ])
+
     def outer_band_setting(outerband_edge_id_list):
         oBoundaryModule.AssignVectorPotential(
             [
@@ -41,6 +45,7 @@ def band_model(oDesign, oEditor, band_name_list):
                 "Value:="		, "0",
                 "CoordinateSystem:="	, ""
             ])
+
     def draw_rota_band():
         oEditor.CreateRegularPolygon(
             [
@@ -54,7 +59,7 @@ def band_model(oDesign, oEditor, band_name_list):
                 "ZStart:="		, "0mm",
                 "NumSides:="		, "360",
                 "WhichAxis:="		, "Z"
-            ], 
+            ],
             [
                 "NAME:Attributes",
                 "Name:="		, rotaband,
@@ -66,6 +71,7 @@ def band_model(oDesign, oEditor, band_name_list):
                 "MaterialValue:="	, "\"vacuum\"",
                 "SolveInside:="		, True
             ])
+
     def rota_band_setting():
         oModelModule.AssignBand(
             [
@@ -83,6 +89,7 @@ def band_model(oDesign, oEditor, band_name_list):
             ])
 
     # excute the band model and setting
+    iron_loss_setup()
     draw_outer_band()
     outer_band_setting(outerband_edge_id_list)
     draw_rota_band()

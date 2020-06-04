@@ -1,5 +1,6 @@
 rotor_params = {
-    "Dro": "74mm",
+    "airgap": "0.5mm",
+    "Dro": "Dsi-airgap*2",
     "Dri": "30mm",
     "pole": "10",
     "rotor_type": "1",

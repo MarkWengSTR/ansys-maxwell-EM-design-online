@@ -41,11 +41,11 @@ if __name__ == "__main__":
 
     params_setting(oDesign, total_mech_params)
 
-    stator_model(oEditor, list(stator_params.keys()))
+    stator_model(oEditor, stator_params)
 
-    rotor_model(oEditor, list(rotor_params.keys()))
+    rotor_model(oEditor, rotor_params)
 
-    magnets_model(oEditor, int(rotor_params["pole"]), list(rotor_params.keys()))
+    magnets_model(oEditor, rotor_params)
 
     coil_name_list = coils_model(oEditor, int(stator_params["slot"]))
 
@@ -60,6 +60,9 @@ if __name__ == "__main__":
 
     analysis_setting(oDesign, analysis_params["name"],
                      analysis_params["stoptime"], analysis_params["timestep"])
+
+    oModule = oDesign.GetModule("BoundarySetup")
+    oModule.SetCoreLoss(["stator", "rotor"], False)
 
     print('Start Analysis')
 
