@@ -1,5 +1,7 @@
-def band_model(oDesign, oEditor, band_name_list):
+def band_model(ansys_object, band_name_list):
     print('Draw and set band model and ironloss')
+    oEditor = ansys_object["oEditor"]
+    oDesign = ansys_object["oDesign"]
 
     oBoundaryModule = oDesign.GetModule("BoundarySetup")
     oModelModule = oDesign.GetModule("ModelSetup")

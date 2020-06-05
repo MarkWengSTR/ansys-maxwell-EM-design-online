@@ -1,9 +1,8 @@
-from params.stator import stator_params
-from params.rotor import rotor_params
+from params.mechanical import stator_params, rotor_params
 from params.motor import motor_params
 from params.excitation import excitation_params
 from params.band import band_params
-from params.name import name_dirt
+from params.name import name_params
 from params.analysis import analysis_params
 from params.optiparametric import optiparametric_variables
 from params.report import report_list
@@ -34,44 +33,41 @@ if __name__ == "__main__":
     # if geomotry_errors['error_present?']:
     #     raise BaseException(geomotry_errors['error_msg'])
 
-    total_mech_params = {**stator_params, **rotor_params,
+    total_mech_params = {**rotor_params, **stator_params,
                          **motor_params, **band_params, **excitation_params}
 
-    oProject, oDesign, oEditor = find_or_initial_project()
+    ansys_object = find_or_initial_project()
 
-    params_setting(oDesign, total_mech_params)
+    params_setting(ansys_object["oDesign"], total_mech_params)
 
-    stator_model(oEditor, stator_params)
+    stator_model(ansys_object["oEditor"], stator_params)
 
-    rotor_model(oEditor, rotor_params)
+    rotor_model(ansys_object["oEditor"], rotor_params)
 
-    magnets_model(oEditor, rotor_params)
+    magnets_model(ansys_object["oEditor"], rotor_params)
 
-    coil_name_list = coils_model(oEditor, int(stator_params["slot"]))
+    coil_name_list = coils_model(ansys_object["oEditor"], int(stator_params["slot"]))
 
-    current_excitation_setting(oDesign, coil_name_list,
-                               name_dirt["excitation_name"])
+    current_excitation_setting(ansys_object["oDesign"], coil_name_list,
+                               name_params["excitation_name"])
 
-    model_setting(oDesign, motor_params["length"], motor_params["multiplier"])
+    model_setting(ansys_object["oDesign"], motor_params["length"], motor_params["multiplier"])
 
-    band_model(oDesign, oEditor, name_dirt["band_name"])
+    band_model(ansys_object, name_params["band_name"])
 
-    mesh_setting(oDesign, name_dirt["band_name"])
+    mesh_setting(ansys_object["oDesign"], name_params["band_name"])
 
-    analysis_setting(oDesign, analysis_params["name"],
+    analysis_setting(ansys_object["oDesign"], analysis_params["name"],
                      analysis_params["stoptime"], analysis_params["timestep"])
-
-    oModule = oDesign.GetModule("BoundarySetup")
-    oModule.SetCoreLoss(["stator", "rotor"], False)
 
     print('Start Analysis')
 
     opt_oModule, opt_name = optimetrics_setting(
-        oProject, oDesign, optiparametric_variables, analysis_params["name"])
+        ansys_object["oProject"], ansys_object["oDesign"], optiparametric_variables, analysis_params["name"])
 
     opt_oModule.SolveSetup(opt_name)
 
-    report_moudule = report_setting(oDesign, report_list, optiparametric_variables)
+    report_moudule = report_setting(ansys_object["oDesign"], report_list, optiparametric_variables)
 
     # TODO: this path should be general
     report_moudule.ExportToFile(

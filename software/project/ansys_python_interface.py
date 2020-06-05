@@ -2,6 +2,7 @@
 
 from win32com import client
 
+
 def find_or_initial_project():
     print('Initial project')
 
@@ -16,13 +17,20 @@ def find_or_initial_project():
     # else:
     #     oProject = oDesktop.GetActiveProject()
 
-    oDesign = oProject.InsertDesign("Maxwell 2D", "Maxwell2DDesign1", "Transient", "")
+    oDesign = oProject.InsertDesign(
+        "Maxwell 2D", "Maxwell2DDesign1", "Transient", "")
     # find previous project
     # if len(oProject.GetTopDesignList()) == 0:
     #     oDesign = oProject.InsertDesign("Maxwell 2D", "Maxwell2DDesign1", "Transient", "")
     # else:
     #     oDesign = oProject.GetActiveDesign()
 
-    oEditor  = oDesign.SetActiveEditor("3D Modeler")
+    oEditor = oDesign.SetActiveEditor("3D Modeler")
 
-    return oProject, oDesign, oEditor
+    ansys_object = {
+        "oProject": oProject,
+        "oDesign": oDesign,
+        "oEditor": oEditor,
+    }
+
+    return ansys_object
