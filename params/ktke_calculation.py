@@ -20,20 +20,21 @@ motor_cal_parms = {
     "stator": {
         "OD_limit": 110,
         "slot": 12,
-        "shoes_front": 1,
-        "shoes_back": 1,
+        "shoes_height_front": 1,
+        "shoes_height_back": 1,
         "slot_corner_arc": 0.5,
     },
     "rotor": {
         "pole": 10,
-        "mag_emb": 0.8, # easier magetization
+        "mag_emb": 0.8,  # easier magetization
         "mag_pc": 7.5,  # for not easy to broke
     },
     "length": 50,
     "airgap": 0.5,
-    "w_factor_10p12s": 0.93,
+    "w_factor_10p12s": 0.933,
     "estimate": {
         "teeth_mag_ang_ratio": 0.6,
+        "york_teeth_ratio": 0.7,
         "rotor_OD_ratio": 0.6,
         "Bg": 1.2,
     },
@@ -44,7 +45,6 @@ motor_cal_parms = {
     },
     "calculation": {
         "est_rotor_OD": None,
-        "mag_angle": None,
         "mag_thick": None,
         "teeth_width": None,
         "york_width": None,
@@ -56,7 +56,8 @@ motor_cal_parms = {
     },
 }
 
-total_cal_params = {"spec_params": spec_params, "motor_cal_parms": motor_cal_parms}
+total_cal_params = {"spec_params": spec_params,
+                    "motor_cal_parms": motor_cal_parms}
 
 
 def ktke_validate(total_cal_params):
@@ -83,16 +84,17 @@ def ktke_validate(total_cal_params):
     return total_cal_params
 
 
-def initial_NBLR(total_cal_params):
+def expend_NBLR(total_cal_params):
     cal_parms = total_cal_params["motor_cal_parms"]
 
-    ke                    = total_cal_params["spec_params"]["ke"]
-    stator_OD_limit, slot = cal_parms["stator"]["OD_limit"] / 1000, cal_parms["stator"]["slot"]
-    Bg                    = cal_parms["estimate"]["Bg"]
-    rotor_OD_ratio        = cal_parms["estimate"]["rotor_OD_ratio"]
-    length                = cal_parms["length"] / 1000
-    w_factor_10p12s       = cal_parms["w_factor_10p12s"]
-    Y_para                = cal_parms["coil"]["Y_para"]
+    ke = total_cal_params["spec_params"]["ke"]
+    stator_OD_limit, slot = cal_parms["stator"]["OD_limit"] / \
+        1000,        cal_parms["stator"]["slot"]
+    Bg = cal_parms["estimate"]["Bg"]
+    rotor_OD_ratio = cal_parms["estimate"]["rotor_OD_ratio"]
+    length = cal_parms["length"] / 1000
+    w_factor_10p12s = cal_parms["w_factor_10p12s"]
+    Y_para = cal_parms["coil"]["Y_para"]
 
     coil_turns = math.ceil(
         ke/(2 * (slot / 3 / Y_para) * Bg * length * (stator_OD_limit * rotor_OD_ratio / 2) * w_factor_10p12s))
@@ -100,18 +102,45 @@ def initial_NBLR(total_cal_params):
     est_rotor_ORad = round(
         ke/(2 * (coil_turns * slot / 3 / Y_para) * Bg * length * w_factor_10p12s), 3)
 
-    cal_parms["calculation"]["est_rotor_OD"] = est_rotor_ORad * 2
+    cal_parms["calculation"]["est_rotor_OD"] = est_rotor_ORad * 2 * 1000
     cal_parms["calculation"]["coil_turns"] = coil_turns
+
+    return total_cal_params
+
+
+def expend_stator_teeth_york(total_cal_params):
+    cal_parms = total_cal_params["motor_cal_parms"]
+
+    teeth_mag_ang_ratio = cal_parms["estimate"]["teeth_mag_ang_ratio"]
+    pole = cal_parms["rotor"]["pole"]
+    mag_emb = cal_parms["rotor"]["mag_emb"]
+    york_teeth_ratio = cal_parms["estimate"]["york_teeth_ratio"]
+    rotor_OD = cal_parms["calculation"]["est_rotor_OD"]
+    airgap = cal_parms["airgap"]
+    shoes_height_front = cal_parms["stator"]["shoes_height_front"]
+    shoes_height_back = cal_parms["stator"]["shoes_height_back"]
+
+    mag_angle = mag_emb * (360 / pole)
+    teeth_angle = teeth_mag_ang_ratio * mag_angle
+
+    teeth_width = round((rotor_OD + (airgap + shoes_height_front +
+                                     shoes_height_back)*2) * math.pi * (teeth_angle / 360), 1)
+    york_width = round(teeth_width * york_teeth_ratio, 1)
+
+    cal_parms["calculation"]["teeth_width"] = teeth_width
+    cal_parms["calculation"]["york_width"] = york_width
 
     return total_cal_params
 
 
 def mech_cal(total_cal_params):
     ktke_validate(total_cal_params) and \
-    initial_NBLR(total_cal_params)
+        expend_NBLR(total_cal_params) and \
+        expend_stator_teeth_york(total_cal_params)
 
     if total_cal_params["spec_params"]["error_present"]:
         raise BaseException(total_cal_params["spec_params"]["error_msg"])
+
 
 mech_cal(total_cal_params)
 
