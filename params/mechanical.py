@@ -1,5 +1,5 @@
 stator_params = {
-    "Dsi": "63",
+    "Dsi": "63mm",
     "Dso": "100mm",
     "slot": "12",
     "Hs0": "1mm",
@@ -26,3 +26,4 @@ rotor_params = {
     "rotor_bridge": "0mm",
     "rotor_rib": "0mm",
 }
+

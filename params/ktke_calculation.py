@@ -16,7 +16,7 @@ spec_params = {
     "error_msg":      None,
 }
 
-motor_cal_parms = {
+motor_cal_params = {
     "stator": {
         "OD_limit": 110,
         "slot": 12,
@@ -61,7 +61,7 @@ motor_cal_parms = {
 }
 
 total_cal_params = {"spec_params": spec_params,
-                    "motor_cal_parms": motor_cal_parms}
+                    "motor_cal_params": motor_cal_params}
 
 
 def ktke_validate(total_cal_params):
@@ -89,16 +89,16 @@ def ktke_validate(total_cal_params):
 
 
 def expend_NBLR(total_cal_params):
-    cal_parms = total_cal_params["motor_cal_parms"]
+    cal_params = total_cal_params["motor_cal_params"]
 
     ke = total_cal_params["spec_params"]["ke"]
-    stator_OD_limit, slot = cal_parms["stator"]["OD_limit"] / \
-        1000,        cal_parms["stator"]["slot"]
-    Bg = cal_parms["estimate"]["Bg"]
-    rotor_OD_ratio = cal_parms["estimate"]["rotor_OD_ratio"]
-    length = cal_parms["length"] / 1000
-    w_factor_10p12s = cal_parms["w_factor_10p12s"]
-    Y_para = cal_parms["coil"]["Y_para"]
+    stator_OD_limit, slot = cal_params["stator"]["OD_limit"] / \
+        1000,        cal_params["stator"]["slot"]
+    Bg = cal_params["estimate"]["Bg"]
+    rotor_OD_ratio = cal_params["estimate"]["rotor_OD_ratio"]
+    length = cal_params["length"] / 1000
+    w_factor_10p12s = cal_params["w_factor_10p12s"]
+    Y_para = cal_params["coil"]["Y_para"]
 
     coil_turns = math.ceil(
         ke/(2 * (slot / 3 / Y_para) * Bg * length * (stator_OD_limit * rotor_OD_ratio / 2) * w_factor_10p12s))
@@ -106,23 +106,23 @@ def expend_NBLR(total_cal_params):
     est_rotor_ORad = round(
         ke/(2 * (coil_turns * slot / 3 / Y_para) * Bg * length * w_factor_10p12s), 3)
 
-    cal_parms["calculation"]["est_rotor_OD"] = est_rotor_ORad * 2 * 1000
-    cal_parms["calculation"]["coil_turns"] = coil_turns
+    cal_params["calculation"]["est_rotor_OD"] = est_rotor_ORad * 2 * 1000
+    cal_params["calculation"]["coil_turns"] = coil_turns
 
     return total_cal_params
 
 
 def expend_stator_teeth_york(total_cal_params):
-    cal_parms = total_cal_params["motor_cal_parms"]
+    cal_params = total_cal_params["motor_cal_params"]
 
-    teeth_mag_ang_ratio = cal_parms["estimate"]["teeth_mag_ang_ratio"]
-    pole = cal_parms["rotor"]["pole"]
-    mag_emb = cal_parms["rotor"]["mag_emb"]
-    york_teeth_ratio = cal_parms["estimate"]["york_teeth_ratio"]
-    rotor_OD = cal_parms["calculation"]["est_rotor_OD"]
-    airgap = cal_parms["airgap"]
-    shoes_height_front = cal_parms["stator"]["shoes_height_front"]
-    shoes_height_back = cal_parms["stator"]["shoes_height_back"]
+    teeth_mag_ang_ratio = cal_params["estimate"]["teeth_mag_ang_ratio"]
+    pole = cal_params["rotor"]["pole"]
+    mag_emb = cal_params["rotor"]["mag_emb"]
+    york_teeth_ratio = cal_params["estimate"]["york_teeth_ratio"]
+    rotor_OD = cal_params["calculation"]["est_rotor_OD"]
+    airgap = cal_params["airgap"]
+    shoes_height_front = cal_params["stator"]["shoes_height_front"]
+    shoes_height_back = cal_params["stator"]["shoes_height_back"]
 
     mag_angle = mag_emb * (360 / pole)
     teeth_angle = teeth_mag_ang_ratio * mag_angle
@@ -131,36 +131,36 @@ def expend_stator_teeth_york(total_cal_params):
                                      shoes_height_back)*2) * math.pi * (teeth_angle / 360), 1)
     york_width = round(teeth_width * york_teeth_ratio, 1)
 
-    cal_parms["calculation"]["teeth_width"] = teeth_width
-    cal_parms["calculation"]["york_width"] = york_width
+    cal_params["calculation"]["teeth_width"] = teeth_width
+    cal_params["calculation"]["york_width"] = york_width
 
     return total_cal_params
 
 
 def expend_stator_slot(total_cal_params):
-    cal_parms = total_cal_params["motor_cal_parms"]
-    stator = cal_parms["stator"]
+    cal_params = total_cal_params["motor_cal_params"]
+    stator = cal_params["stator"]
 
     stator_OD_limit = stator["OD_limit"]
-    conductor_OD = cal_parms["coil"]["conductor_OD"]
-    membrane_ratio = cal_parms["coil"]["membrane_ratio"]
-    coil_turns = cal_parms["calculation"]["coil_turns"]
-    slot = cal_parms["stator"]["slot"]
-    teeth_width = cal_parms["calculation"]["teeth_width"]
-    york_width = cal_parms["calculation"]["york_width"]
-    rotor_OD = cal_parms["calculation"]["est_rotor_OD"]
-    airgap = cal_parms["airgap"]
-    shoes_height_front = cal_parms["stator"]["shoes_height_front"]
-    shoes_height_back = cal_parms["stator"]["shoes_height_back"]
+    conductor_OD = cal_params["coil"]["conductor_OD"]
+    membrane_ratio = cal_params["coil"]["membrane_ratio"]
+    coil_turns = cal_params["calculation"]["coil_turns"]
+    slot = cal_params["stator"]["slot"]
+    teeth_width = cal_params["calculation"]["teeth_width"]
+    york_width = cal_params["calculation"]["york_width"]
+    rotor_OD = cal_params["calculation"]["est_rotor_OD"]
+    airgap = cal_params["airgap"]
+    shoes_height_front = cal_params["stator"]["shoes_height_front"]
+    shoes_height_back = cal_params["stator"]["shoes_height_back"]
 
     para_conductor = math.ceil(
         total_cal_params["spec_params"]["current_rms"] /
-        (cal_parms["coil"]["rate_J"] * (conductor_OD ** 2 * math.pi / 4) * cal_parms["coil"]["Y_para"]))
+        (cal_params["coil"]["rate_J"] * (conductor_OD ** 2 * math.pi / 4) * cal_params["coil"]["Y_para"]))
 
     coil_area = round(2 * coil_turns * ((conductor_OD *
                                          membrane_ratio) ** 2 * math.pi / 4) * para_conductor, 2)
 
-    est_slot_area = round(coil_area / cal_parms["coil"]["slot_fill_factor"], 2)
+    est_slot_area = round(coil_area / cal_params["coil"]["slot_fill_factor"], 2)
 
     max_slot_height = stator_OD_limit/2 - york_width - \
         shoes_height_front - shoes_height_back - (rotor_OD + airgap*2)/2
@@ -184,16 +184,16 @@ def expend_stator_slot(total_cal_params):
             slot_height += 0.01
 
 
-    cal_parms["calculation"]["para_conductor"] = para_conductor
-    cal_parms["calculation"]["est_stator_OD"] = (round(slot_height, 2) +  york_width + shoes_height_front + shoes_height_back + airgap)*2 + rotor_OD
-    cal_parms["calculation"]["slot_height"] = round(slot_height, 2)
-    cal_parms["calculation"]["slot_width_front"] = slot_width_front
-    cal_parms["calculation"]["slot_width_back"] = slot_width_back
+    cal_params["calculation"]["para_conductor"] = para_conductor
+    cal_params["calculation"]["est_stator_OD"] = (round(slot_height, 2) +  york_width + shoes_height_front + shoes_height_back + airgap)*2 + rotor_OD
+    cal_params["calculation"]["slot_height"] = round(slot_height, 2)
+    cal_params["calculation"]["slot_width_front"] = slot_width_front
+    cal_params["calculation"]["slot_width_back"] = slot_width_back
 
     return total_cal_params
 
 
-def mech_cal(total_cal_params):
+def mech_stucture_cal(total_cal_params):
     ktke_validate(total_cal_params) and \
         expend_NBLR(total_cal_params) and \
         expend_stator_teeth_york(total_cal_params) and \
@@ -201,6 +201,8 @@ def mech_cal(total_cal_params):
 
     if total_cal_params["spec_params"]["error_present"]:
         raise BaseException(total_cal_params["spec_params"]["error_msg"])
+
+    return total_cal_params
 
 # import ipdb; ipdb.set_trace()
 # ktke_validate(total_cal_params)

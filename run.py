@@ -1,3 +1,4 @@
+from params.ktke_calculation import total_cal_params, mech_stucture_cal
 from params.mechanical import stator_params, rotor_params
 from params.motor import motor_params
 from params.excitation import excitation_params
@@ -32,6 +33,8 @@ if __name__ == "__main__":
 
     # if geomotry_errors['error_present?']:
     #     raise BaseException(geomotry_errors['error_msg'])
+
+    total_cal_params = mech_stucture_cal(total_cal_params)
 
     total_mech_params = {**rotor_params, **stator_params,
                          **motor_params, **band_params, **excitation_params}
