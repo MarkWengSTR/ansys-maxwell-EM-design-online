@@ -9,7 +9,6 @@ from params.report import report_list
 
 from software.project.ansys_python_interface import find_or_initial_project
 
-# import ipdb; ipdb.set_trace()
 # from params.geometry_params_checking import geometry_params_checking
 from software.setting.params_setting import params_setting
 
@@ -26,6 +25,7 @@ from software.setting.analysis_setting import analysis_setting
 from software.setting.optimetrics_setting import optimetrics_setting
 from software.setting.report_setting import report_setting
 
+# import ipdb; ipdb.set_trace()
 
 if __name__ == "__main__":
     # geomotry_errors = geometry_params_checking({**stator_params, **rotor_params})
@@ -71,6 +71,6 @@ if __name__ == "__main__":
 
     # TODO: this path should be general
     report_moudule.ExportToFile(
-        "Moving1.Torque", "C:/Users/bskin/Desktop/Ansoft_script/torque.csv")
+        "Moving1.Torque", "./torque.csv")
 
     print('Simulation Completed')
