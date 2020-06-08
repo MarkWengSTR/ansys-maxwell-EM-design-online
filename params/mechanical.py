@@ -26,4 +26,3 @@ rotor_params = {
     "rotor_bridge": "0mm",
     "rotor_rib": "0mm",
 }
-

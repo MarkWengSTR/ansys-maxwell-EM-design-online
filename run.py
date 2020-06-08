@@ -1,12 +1,4 @@
-from params.ktke_calculation import total_cal_params, mech_stucture_cal
-from params.mechanical import stator_params, rotor_params
-from params.motor import motor_params
-from params.excitation import excitation_params
-from params.band import band_params
-from params.name import name_params
-from params.analysis import analysis_params
-from params.optiparametric import optiparametric_variables
-from params.report import report_list
+from params.total_params_calculation import total_params_calculate
 
 from software.project.ansys_python_interface import find_or_initial_project
 
@@ -34,43 +26,40 @@ if __name__ == "__main__":
     # if geomotry_errors['error_present?']:
     #     raise BaseException(geomotry_errors['error_msg'])
 
-    total_cal_params = mech_stucture_cal(total_cal_params)
-
-    total_mech_params = {**rotor_params, **stator_params,
-                         **motor_params, **band_params, **excitation_params}
+    total_params = total_params_calculate()
 
     ansys_object = find_or_initial_project()
 
-    params_setting(ansys_object["oDesign"], total_mech_params)
+    params_setting(ansys_object["oDesign"], total_params)
 
-    stator_model(ansys_object["oEditor"], stator_params)
+    stator_model(ansys_object["oEditor"], total_params["stator_params"])
 
-    rotor_model(ansys_object["oEditor"], rotor_params)
+    rotor_model(ansys_object["oEditor"], total_params["rotor_params"])
 
-    magnets_model(ansys_object["oEditor"], rotor_params)
+    magnets_model(ansys_object["oEditor"], total_params["rotor_params"])
 
-    coil_name_list = coils_model(ansys_object["oEditor"], int(stator_params["slot"]))
+    coil_name_list = coils_model(ansys_object["oEditor"], int(total_params["stator_params"]["slot"]))
 
     current_excitation_setting(ansys_object["oDesign"], coil_name_list,
-                               name_params["excitation_name"])
+                               total_params["name_params"]["excitation_name"])
 
-    model_setting(ansys_object["oDesign"], motor_params["length"], motor_params["multiplier"])
+    model_setting(ansys_object["oDesign"], total_params["motor_params"]["length"], total_params["motor_params"]["multiplier"])
 
-    band_model(ansys_object, name_params["band_name"])
+    band_model(ansys_object, total_params["name_params"]["band_name"])
 
-    mesh_setting(ansys_object["oDesign"], name_params["band_name"])
+    mesh_setting(ansys_object["oDesign"], total_params["name_params"]["band_name"])
 
-    analysis_setting(ansys_object["oDesign"], analysis_params["name"],
-                     analysis_params["stoptime"], analysis_params["timestep"])
+    analysis_setting(ansys_object["oDesign"], total_params["analysis_params"]["name"],
+                     total_params["analysis_params"]["stoptime"], total_params["analysis_params"]["timestep"])
 
     print('Start Analysis')
 
     opt_oModule, opt_name = optimetrics_setting(
-        ansys_object["oProject"], ansys_object["oDesign"], optiparametric_variables, analysis_params["name"])
+        ansys_object["oProject"], ansys_object["oDesign"], total_params["optiparametric"], total_params["analysis_params"]["name"])
 
     opt_oModule.SolveSetup(opt_name)
 
-    report_moudule = report_setting(ansys_object["oDesign"], report_list, optiparametric_variables)
+    report_moudule = report_setting(ansys_object["oDesign"], total_params["report"], total_params["optiparametric"])
 
     # TODO: this path should be general
     report_moudule.ExportToFile(
