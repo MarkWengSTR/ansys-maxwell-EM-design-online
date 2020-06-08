@@ -28,7 +28,6 @@ motor_cal_params = {
     "rotor": {
         "pole": 10,
         "mag_emb": 0.8,  # easier magetization
-        "mag_pc": 7.5,  # for not easy to broke
     },
     "length": 50,
     "airgap": 0.5,
@@ -38,6 +37,7 @@ motor_cal_params = {
         "york_teeth_ratio": 0.7,
         "rotor_OD_ratio": 0.6,
         "Bg": 1.2,
+        "mag_pc": 7.5,  # for not easy to broke
     },
     "coil": {
         "conductor_OD": 1,
@@ -192,12 +192,20 @@ def expend_stator_slot(total_cal_params):
 
     return total_cal_params
 
+def expend_magnet(total_cal_params):
+    cal_params = total_cal_params["motor_cal_params"]
+
+    cal_params["calculation"]["mag_thick"] = cal_params["estimate"]["mag_pc"] * cal_params["rotor"]["mag_emb"] * cal_params["airgap"]
+
+    return total_cal_params
+
 
 def mech_stucture_cal(total_cal_params):
     ktke_validate(total_cal_params) and \
         expend_NBLR(total_cal_params) and \
         expend_stator_teeth_york(total_cal_params) and \
-        expend_stator_slot(total_cal_params)
+        expend_stator_slot(total_cal_params) and \
+        expend_magnet(total_cal_params)
 
     if total_cal_params["spec_params"]["error_present"]:
         raise BaseException(total_cal_params["spec_params"]["error_msg"])
