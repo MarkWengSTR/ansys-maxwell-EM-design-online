@@ -3,23 +3,32 @@ import math
 def ktke_validate(total_cal_params):
     spec_params = total_cal_params["spec_params"]
 
-    out_power, voltage_dc, voltage_buffer, est_pf, est_eff, speed_rpm = \
-        spec_params["out_power"], spec_params["voltage_dc"], spec_params[
-            "voltage_buffer"], spec_params["est_pf"], spec_params["est_eff"], spec_params["speed_rpm"]
+    max_power, voltage_dc, voltage_buffer, est_pf, est_eff, max_torque_nm, max_speed_rpm = \
+        spec_params["max_power"], spec_params["voltage_dc"], spec_params[
+            "voltage_buffer"], spec_params["est_pf"], spec_params["est_eff"], spec_params["max_torque_nm"], spec_params["max_speed_rpm"]
 
-    spec_params["speed_rad_s"] = round((speed_rpm * 2 * math.pi) / 60, 2)
-    spec_params["current_rms"] = round(
-        (out_power / est_eff) / (3**0.5 * (voltage_dc * voltage_buffer / 2**0.5) * est_pf), 2)
-    spec_params["torque_nm"] = round(out_power / spec_params["speed_rad_s"], 2)
+    spec_params["max_current_rms"] = round(
+        (max_power / est_eff) / (3**0.5 * (voltage_dc * voltage_buffer / 2**0.5) * est_pf), 2)
 
     spec_params["ke"] = round(
-        (voltage_dc * voltage_buffer / 3**0.5) / spec_params["speed_rad_s"], 4)
+        (voltage_dc * voltage_buffer / 3**0.5) / ((max_speed_rpm * 2 * math.pi) / 60), 4)
     spec_params["kt"] = round(
-        spec_params["torque_nm"] / (1.5 * spec_params["current_rms"] * 2**0.5), 4)
+        max_torque_nm / (1.5 * spec_params["max_current_rms"] * 2**0.5), 4)
 
     if spec_params["kt"] > spec_params["ke"]:
         spec_params["error_present"] = True
-        spec_params["error_msg"] = "ke must large than kt"
+        spec_params["error_msg"] = "no flux weakening, ke must large than kt"
+
+    return total_cal_params
+
+
+def assign_spec_value(total_cal_params):
+    spec_params = total_cal_params["spec_params"]
+    cal_params = total_cal_params["motor_cal_params"]
+
+    cal_params["stator"]["OD_limit"] = spec_params["stator_OD_limit"]
+    cal_params["length"] = spec_params["lenght_limit"]
+    cal_params["coil"]["max_J"] = spec_params["max_J"]
 
     return total_cal_params
 
@@ -30,17 +39,17 @@ def expend_NBLR(total_cal_params):
     ke = total_cal_params["spec_params"]["ke"]
     stator_OD_limit, slot = cal_params["stator"]["OD_limit"] / \
         1000,        cal_params["stator"]["slot"]
-    Bg = cal_params["estimate"]["Bg"]
+    bg = cal_params["estimate"]["bg"]
     rotor_OD_ratio = cal_params["estimate"]["rotor_OD_ratio"]
     length = cal_params["length"] / 1000
     w_factor_10p12s = cal_params["w_factor_10p12s"]
-    Y_para = cal_params["coil"]["Y_para"]
+    y_para = cal_params["coil"]["y_para"]
 
     coil_turns = math.ceil(
-        ke/(2 * (slot / 3 / Y_para) * Bg * length * (stator_OD_limit * rotor_OD_ratio / 2) * w_factor_10p12s))
+        ke/(2 * (slot / 3 / y_para) * bg * length * (stator_OD_limit * rotor_OD_ratio / 2) * w_factor_10p12s))
 
     est_rotor_ORad = round(
-        ke/(2 * (coil_turns * slot / 3 / Y_para) * Bg * length * w_factor_10p12s), 3)
+        ke/(2 * (coil_turns * slot / 3 / y_para) * bg * length * w_factor_10p12s), 3)
 
     cal_params["calculation"]["est_rotor_OD"] = est_rotor_ORad * 2 * 1000
     cal_params["calculation"]["coil_turns"] = coil_turns
@@ -90,8 +99,8 @@ def expend_stator_slot(total_cal_params):
     shoes_height_back = cal_params["stator"]["shoes_height_back"]
 
     para_conductor = math.ceil(
-        total_cal_params["spec_params"]["current_rms"] /
-        (cal_params["coil"]["rate_J"] * (conductor_OD ** 2 * math.pi / 4) * cal_params["coil"]["Y_para"]))
+        total_cal_params["spec_params"]["max_current_rms"] /
+        (cal_params["coil"]["max_J"] * (conductor_OD ** 2 * math.pi / 4) * cal_params["coil"]["y_para"]))
 
     coil_area = round(2 * coil_turns * ((conductor_OD *
                                          membrane_ratio) ** 2 * math.pi / 4) * para_conductor, 2)
@@ -138,6 +147,7 @@ def expend_magnet(total_cal_params):
 
 def mech_stucture_cal(total_cal_params):
     ktke_validate(total_cal_params) and \
+        assign_spec_value(total_cal_params) and \
         expend_NBLR(total_cal_params) and \
         expend_stator_teeth_york(total_cal_params) and \
         expend_stator_slot(total_cal_params) and \
