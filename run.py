@@ -55,7 +55,7 @@ if __name__ == "__main__":
     print('Start Analysis')
 
     opt_oModule, opt_name = optimetrics_setting(
-        ansys_object["oProject"], ansys_object["oDesign"], total_params["optiparametric"], total_params["analysis_params"]["name"])
+        ansys_object["oProject"], ansys_object["oDesign"], total_params)
 
     opt_oModule.SolveSetup(opt_name)
 
