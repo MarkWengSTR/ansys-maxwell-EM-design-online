@@ -30,9 +30,6 @@ motor_cal_params = {
         "pole": 10,
         "mag_emb": 0.8,  # easier magetization
     },
-    "length": None,
-    "airgap": 0.5,
-    "w_factor_10p12s": 0.933,
     "estimate": {
         "teeth_mag_ang_ratio": 0.6,
         "york_teeth_ratio": 0.7,
@@ -59,5 +56,11 @@ motor_cal_params = {
         "para_conductor": None,
         "coil_turns": None,
     },
+    "length": None,
+    "airgap": 0.5,
+    "w_factor_10p12s": 0.933,
+    "corner_speed_rpm": 1000,
+    "max_speed_rpm":    3000,
+    "max_current_rms":  None,
 }
 

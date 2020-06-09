@@ -6,7 +6,7 @@ from params.excitation import excitation_params
 from params.band import band_params
 from params.name import name_params
 from params.analysis import analysis_params
-from params.optiparametric import optiparametric_variables
+from params.optiparametric import optiparametric_params
 from params.report import report_list
 
 total_cal_params = {"spec_params": spec_params,
@@ -18,7 +18,7 @@ total_cal_params = {"spec_params": spec_params,
                     "band_params": band_params,
                     "name_params": name_params,
                     "analysis_params": analysis_params,
-                    "optiparametric": optiparametric_variables,
+                    "optiparametric_params": optiparametric_params,
                     "report": report_list,
                     }
 
@@ -57,9 +57,40 @@ def rotor_params_assign(total_cal_params):
     return total_cal_params
 
 
+def motor_params_assign(total_cal_params):
+    motor_params = total_cal_params["motor_params"]
+    cal_params = total_cal_params["motor_cal_params"]
+
+    motor_params["speed_rpm"] = str(cal_params["corner_speed_rpm"]) + "rpm"
+    motor_params["length"] = str(cal_params["length"]) + "mm"
+
+    return total_cal_params
+
+def excitation_params_assign(total_cal_params):
+    excitation_params = total_cal_params["excitation_params"]
+    cal_params = total_cal_params["motor_cal_params"]
+
+    excitation_params["N"] = str(cal_params["calculation"]["coil_turns"])
+    excitation_params["Im"] = str(cal_params["max_current_rms"]) + "A"
+
+    return total_cal_params
+
+def optiparametric_params_assign(total_cal_params):
+    optiparametric_params = total_cal_params["optiparametric_params"]
+    cal_params = total_cal_params["motor_cal_params"]
+
+    optiparametric_params["max_power"] = [str(cal_params["max_current_rms"]) + "A", str(cal_params["corner_speed_rpm"]) + "rpm"]
+    optiparametric_params["max_speed"] = ["0A", str(cal_params["max_speed_rpm"]) + "rpm"]
+
+    return total_cal_params
+
+
 def total_params_calculate():
     mech_stucture_cal(total_cal_params) and \
         stator_params_assign(total_cal_params) and \
+        motor_params_assign(total_cal_params) and \
+        excitation_params_assign(total_cal_params) and \
+        optiparametric_params_assign(total_cal_params) and \
         rotor_params_assign(total_cal_params)
 
     return total_cal_params

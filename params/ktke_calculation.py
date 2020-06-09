@@ -29,6 +29,9 @@ def assign_spec_value(total_cal_params):
     cal_params["stator"]["OD_limit"] = spec_params["stator_OD_limit"]
     cal_params["length"] = spec_params["lenght_limit"]
     cal_params["coil"]["max_J"] = spec_params["max_J"]
+    cal_params["max_current_rms"] = spec_params["max_current_rms"]
+    cal_params["max_speed_rpm"] = spec_params["max_speed_rpm"]
+    cal_params["corner_speed_rpm"] = spec_params["corner_speed_rpm"]
 
     return total_cal_params
 
