@@ -1,4 +1,4 @@
-def report_setting(oDesign, report_list, opt_variable):
+def report_setting(oDesign, report_list):
     oModule = oDesign.GetModule("ReportSetup")
 
     def create_report(report_name_with_x_axis):

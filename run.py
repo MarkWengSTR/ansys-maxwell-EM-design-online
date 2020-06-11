@@ -52,6 +52,7 @@ if __name__ == "__main__":
     analysis_setting(ansys_object["oDesign"], total_params["analysis_params"]["name"],
                      total_params["analysis_params"]["stoptime"], total_params["analysis_params"]["timestep"])
 
+    print(total_params["motor_cal_params"]["calculation"])
     print('Start Analysis')
 
     opt_oModule, opt_name = optimetrics_setting(
@@ -59,7 +60,7 @@ if __name__ == "__main__":
 
     opt_oModule.SolveSetup(opt_name)
 
-    report_moudule = report_setting(ansys_object["oDesign"], total_params["report"], total_params["optiparametric"])
+    report_moudule = report_setting(ansys_object["oDesign"], total_params["report"])
 
     # TODO: this path should be general
     report_moudule.ExportToFile(

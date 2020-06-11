@@ -1,11 +1,9 @@
 def optimetrics_setting(oProject, oDesign, total_params, reset='set_first_time'):
-    variables_dict, analysis_name = total_params["optiparametric"], total_params["analysis_params"]["name"]
+    max_power, max_speed = total_params["optiparametric_params"]["max_power"], total_params["optiparametric_params"]["max_speed"]
     opt_name = "OPT"
     oModule = oDesign.GetModule("Optimetrics")
-    opt_name_list = list(variables_dict.keys())
-    opt_data_list = list(variables_dict.values())
 
-    def opt_setting(opt_params):
+    def opt_setting():
         oModule.InsertSetup("OptiParametric",
                             [
                                 "NAME:" + opt_name,
@@ -24,7 +22,7 @@ def optimetrics_setting(oProject, oDesign, total_params, reset='set_first_time')
                                         [
                                                 "NAME:SweepDefinition",
                                                 "Variable:="		, "Im",
-                                                "Data:="		, "1A",
+                                                "Data:="		, "0A",
                                                 "OffsetF1:="		, False,
                                                 "Synchronize:="		, 0
                                         ],
@@ -38,8 +36,8 @@ def optimetrics_setting(oProject, oDesign, total_params, reset='set_first_time')
                                 ],
                                 [
                                         "NAME:Sweep Operations",
-                                        "add:=", ["20A","3000rpm"],
-                                        "add:=", ["0A","3000rpm"],
+                                        "add:=", max_power,
+                                        "add:=", max_speed ,
                                 ],
                                 [
                                     "NAME:Goals"
@@ -79,9 +77,7 @@ def optimetrics_setting(oProject, oDesign, total_params, reset='set_first_time')
 #                           ])
 
     # exec
-    list(map(opt_setting,
-             opt_name_list, opt_data_list
-             ))
+    opt_setting()
 
     # if reset == 'set_first_time':
     #     list(map(opt_setting,
