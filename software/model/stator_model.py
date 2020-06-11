@@ -1,9 +1,11 @@
 # Stator
 
-def stator_model(oEditor, stator_params):
+def stator_model(ctx):
     print('Draw Stator model')
 
-    oEditor.CreateUserDefinedPart(
+    stator_params = ctx["params"]["stator_params"]
+
+    ctx["ansys_object"]["oEditor"].CreateUserDefinedPart(
         [
             "NAME:UserDefinedPrimitiveParameters",
             "DllName:="		, "RMxprt/SlotCore.dll",
@@ -120,3 +122,5 @@ def stator_model(oEditor, stator_params):
             "MaterialValue:="	, "\"35CS250_20190702\"",
             "SolveInside:="		, True
         ])
+
+    return ctx

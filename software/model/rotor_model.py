@@ -1,9 +1,11 @@
 # rotor
 
-def rotor_model(oEditor, rotor_params):
+def rotor_model(ctx):
     print('Draw rotor model')
 
-    oEditor.CreateUserDefinedPart(
+    rotor_params = ctx["params"]["rotor_params"]
+
+    ctx["ansys_object"]["oEditor"].CreateUserDefinedPart(
         [
             "NAME:UserDefinedPrimitiveParameters",
             "DllName:="		, "RMxprt/PMCore.dll",
@@ -91,3 +93,4 @@ def rotor_model(oEditor, rotor_params):
             "SolveInside:="		, True
         ])
 
+    return ctx

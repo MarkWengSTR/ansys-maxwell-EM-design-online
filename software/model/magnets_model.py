@@ -1,10 +1,12 @@
 # magmets
 
 
-def magnets_model(oEditor, rotor_params):
+def magnets_model(ctx):
     print('Draw magnet model and set vector')
 
+    rotor_params = ctx["params"]["rotor_params"]
     rotor_pole = int(rotor_params["pole"])
+    oEditor = ctx["ansys_object"]["oEditor"]
 
     oEditor.CreateUserDefinedPart(
         [
@@ -272,3 +274,5 @@ def magnets_model(oEditor, rotor_params):
     # exec function
     muti_mag()
     muti_vector_set()
+
+    return ctx

@@ -4,8 +4,11 @@ from functools import reduce, partial
 from functional_pipeline import String, pipeline
 
 
-def coils_model(oEditor, stator_slot, Dsi="Dsi", Dso="Dso", slot="slot", Hs0="Hs0", Hs1="Hs1", Hs2="Hs2", Bs0="Bs0", Bs1="Bs1", Bs2="Bs2", Rs="Rs"):
+def coils_model(ctx):
     print('Draw coil model')
+
+    oEditor     = ctx["ansys_object"]["oEditor"]
+    stator_slot = int(ctx["params"]["stator_params"]["slot"])
 
     oEditor.CreateUserDefinedPart(
         [
@@ -19,12 +22,12 @@ def coils_model(oEditor, stator_slot, Dsi="Dsi", Dso="Dso", slot="slot", Hs0="Hs
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaGap",
-                    "Value:="		, Dsi
+                    "Value:="		, "Dsi"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaYoke",
-                    "Value:="		, Dso
+                    "Value:="		, "Dso"
                 ],
                 [
                     "NAME:Pair",
@@ -39,7 +42,7 @@ def coils_model(oEditor, stator_slot, Dsi="Dsi", Dso="Dso", slot="slot", Hs0="Hs
                 [
                     "NAME:Pair",
                     "Name:="		, "Slots",
-                    "Value:="		, slot
+                    "Value:="		, "slot"
                 ],
                 [
                     "NAME:Pair",
@@ -49,37 +52,37 @@ def coils_model(oEditor, stator_slot, Dsi="Dsi", Dso="Dso", slot="slot", Hs0="Hs
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs0",
-                    "Value:="		, Hs0
+                    "Value:="		, "Hs0"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs1",
-                    "Value:="		, Hs1
+                    "Value:="		, "Hs1"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs2",
-                    "Value:="		, Hs2
+                    "Value:="		, "Hs2"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs0",
-                    "Value:="		, Bs0
+                    "Value:="		, "Bs0"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs1",
-                    "Value:="		, Bs1
+                    "Value:="		, "Bs1"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs2",
-                    "Value:="		, Bs2
+                    "Value:="		, "Bs2"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Rs",
-                    "Value:="		, Rs
+                    "Value:="		, "Rs"
                 ],
                 [
                     "NAME:Pair",
@@ -359,7 +362,8 @@ def coils_model(oEditor, stator_slot, Dsi="Dsi", Dso="Dso", slot="slot", Hs0="Hs
 
     # function exec
     coil_muti()
-    total_expect_coil_name_list = coil_nameing_and_color_for_abc_winding()
-    return total_expect_coil_name_list
+    ctx["coil_name_list"] = coil_nameing_and_color_for_abc_winding()
+
+    return ctx
 
 # color setting end

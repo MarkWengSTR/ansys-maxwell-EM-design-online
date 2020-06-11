@@ -30,18 +30,15 @@ if __name__ == "__main__":
 
     ctx = {
         "params": total_params_calculate(),
-        "ansys_object": find_or_initial_project()
+        "ansys_object": find_or_initial_project(),
+        "coil_name_list": None
     }
 
-    params_setting(ctx)
-
-    stator_model(ansys_object["oEditor"], total_params["stator_params"])
-
-    rotor_model(ansys_object["oEditor"], total_params["rotor_params"])
-
-    magnets_model(ansys_object["oEditor"], total_params["rotor_params"])
-
-    coil_name_list = coils_model(ansys_object["oEditor"], int(total_params["stator_params"]["slot"]))
+    params_setting(ctx) and \
+        stator_model(ctx) and \
+        rotor_model(ctx) and \
+        magnets_model(ctx) and \
+        coils_model(ctx)
 
     current_excitation_setting(ansys_object["oDesign"], coil_name_list,
                                total_params["name_params"]["excitation_name"])
