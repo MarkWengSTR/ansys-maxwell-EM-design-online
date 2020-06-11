@@ -1,13 +1,17 @@
 # params setting
 
-def params_setting(oDesign, total_params):
+
+def params_setting(ctx):
     print('params setting')
 
-    total_setting_params = {**total_params["stator_params"], **total_params["rotor_params"],
-                         **total_params["motor_params"], **total_params["band_params"], **total_params["excitation_params"]}
+    params = ctx["params"]
+
+    total_setting_params = {**params["stator_params"], **params["rotor_params"],
+                            **params["motor_params"], **params["band_params"], **params["excitation_params"]}
     # import ipdb; ipdb.set_trace()
+
     for params_name, params_value in total_setting_params.items():
-        oDesign.ChangeProperty(
+        ctx["ansys_object"]["oDesign"].ChangeProperty(
             [
                 "NAME:AllTabs",
                 [
@@ -19,7 +23,7 @@ def params_setting(oDesign, total_params):
                     [
                         "NAME:NewProps",
                         [
-                            "NAME:"+ params_name,
+                            "NAME:" + params_name,
                             "PropType:=", "VariableProp",
                             "UserDef:=", True,
                             "Value:=", params_value

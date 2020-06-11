@@ -28,11 +28,12 @@ if __name__ == "__main__":
     # if geomotry_errors['error_present?']:
     #     raise BaseException(geomotry_errors['error_msg'])
 
-    total_params = total_params_calculate()
+    ctx = {
+        "params": total_params_calculate(),
+        "ansys_object": find_or_initial_project()
+    }
 
-    ansys_object = find_or_initial_project()
-
-    params_setting(ansys_object["oDesign"], total_params)
+    params_setting(ctx)
 
     stator_model(ansys_object["oEditor"], total_params["stator_params"])
 
