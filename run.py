@@ -1,3 +1,5 @@
+import os
+
 from params.total_params_calculation import total_params_calculate
 
 from software.project.ansys_python_interface import find_or_initial_project
@@ -62,8 +64,7 @@ if __name__ == "__main__":
 
     report_moudule = report_setting(ansys_object["oDesign"], total_params["report"])
 
-    # TODO: this path should be general
     report_moudule.ExportToFile(
-        "Moving1.Torque", "./torque.csv")
+        "Moving1.Torque", os.path.join(os.getcwd(), "tmp", "torque.csv"))
 
     print('Simulation Completed')
