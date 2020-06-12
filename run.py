@@ -28,6 +28,26 @@ if __name__ == "__main__":
     # if geomotry_errors['error_present?']:
     #     raise BaseException(geomotry_errors['error_msg'])
 
+    # params = {
+    # "spec_params": spec_params,
+    # "motor_cal_params": motor_cal_params,
+    # "stator_params": stator_params,
+    # "rotor_params": rotor_params,
+    # "motor_params": motor_params,
+    # "excitation_params": excitation_params,
+    # "band_params": band_params,
+    # "name_params": name_params,
+    # "analysis_params": analysis_params,
+    # "optiparametric_params": optiparametric_params,
+    # "report": report_list,
+    # }
+
+    # ansys_object = {
+    #     "oProject": oProject,
+    #     "oDesign": oDesign,
+    #     "oEditor": oEditor,
+    # }
+
     ctx = {
         "params": total_params_calculate(),
         "ansys_object": find_or_initial_project(),
