@@ -26,6 +26,7 @@ def assign_spec_value(total_cal_params):
     cal_params["stator"]["OD_limit"] = spec_params["stator_OD_limit"]
     cal_params["coil"]["max_J"] = spec_params["max_J"]
     cal_params["torque_density"] = spec_params["torque_density"]
+    cal_params["voltage_dc"] = spec_params["voltage_dc"]
     cal_params["max_current_rms"] = spec_params["max_current_rms"]
     cal_params["max_speed_rpm"] = spec_params["max_speed_rpm"]
     cal_params["max_torque_nm"] = spec_params["max_torque_nm"]
