@@ -19,7 +19,7 @@ total_cal_params = {"spec_params": spec_params,
                     "name_params": name_params,
                     "analysis_params": analysis_params,
                     "optiparametric_params": optiparametric_params,
-                    "report": report_list,
+                    "report_list": report_list,
                     }
 
 

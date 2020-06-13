@@ -1,7 +1,8 @@
-def model_setting(oDesign, length, multiplier):
+def model_setting(ctx):
+    ctx["ansys_object"]["oDesign"]
     print('set model params')
 
-    oDesign.SetDesignSettings(
+    ctx["ansys_object"]["oDesign"].SetDesignSettings(
         [
             "NAME:Design Settings Data",
             "PreserveTranSolnAfterDatasetEdit:=", False,
@@ -9,9 +10,11 @@ def model_setting(oDesign, length, multiplier):
             "ComputeIncrementalMatrix:=", False,
             "PerfectConductorThreshold:=", 1E+030,
             "InsulatorThreshold:="	, 1,
-            "ModelDepth:="		, length,
+            "ModelDepth:="		, ctx["params"]["motor_params"]["length"],
             "UseSkewModel:="	, False,
             "EnableTranTranLinkWithSimplorer:=", False,
             "BackgroundMaterialName:=", "vacuum",
-            "Multiplier:="		, multiplier
+            "Multiplier:="		, ctx["params"]["motor_params"]["multiplier"]
         ])
+
+    return ctx

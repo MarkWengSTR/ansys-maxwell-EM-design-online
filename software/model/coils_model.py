@@ -362,7 +362,7 @@ def coils_model(ctx):
 
     # function exec
     coil_muti()
-    ctx["coil_name_list"] = coil_nameing_and_color_for_abc_winding()
+    ctx["data"]["coil_name_list"] = coil_nameing_and_color_for_abc_winding()
 
     return ctx
 

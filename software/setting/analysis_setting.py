@@ -1,15 +1,16 @@
-def analysis_setting(oDesign, name, stoptime, timestep):
+def analysis_setting(ctx):
     print('Analysis params setting')
 
-    oModule = oDesign.GetModule("AnalysisSetup")
-    oModule.InsertSetup("Transient", 
+    oModule = ctx["ansys_object"]["oDesign"].GetModule("AnalysisSetup")
+
+    oModule.InsertSetup("Transient",
         [
-            "NAME:" + name,
+            "NAME:" + ctx["params"]["analysis_params"]["name"],
             "Enabled:="		, True,
             "NonlinearSolverResidual:=", "0.0001",
             "TimeIntegrationMethod:=", 0,
-            "StopTime:="		, stoptime,
-            "TimeStep:="		, timestep,
+            "StopTime:="		, ctx["params"]["analysis_params"]["stoptime"],
+            "TimeStep:="		, ctx["params"]["analysis_params"]["timestep"],
             "OutputError:="		, False,
             "UseControlProgram:="	, False,
             "ControlProgramName:="	, " ",
@@ -25,3 +26,13 @@ def analysis_setting(oDesign, name, stoptime, timestep):
             "MaxTimeStep:="		, "0.003s",
             "TimeStepErrTolerance:=", 0.0001
         ])
+
+    return ctx
+
+def start_analysis(ctx):
+    print(ctx["params"]["motor_cal_params"])
+    print('Start Analysis')
+
+    ctx["data"]["opt_oModule"].SolveSetup(ctx["data"]["opt_name"])
+
+    return ctx

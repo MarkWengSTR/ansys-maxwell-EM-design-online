@@ -1,11 +1,12 @@
-def band_model(ansys_object, band_name_list):
+def band_model(ctx):
     print('Draw and set band model and ironloss')
-    oEditor = ansys_object["oEditor"]
-    oDesign = ansys_object["oDesign"]
+    oEditor = ctx["ansys_object"]["oEditor"]
+    oDesign = ctx["ansys_object"]["oDesign"]
 
     oBoundaryModule = oDesign.GetModule("BoundarySetup")
     oModelModule = oDesign.GetModule("ModelSetup")
-    rotaband, outerband = band_name_list
+    rotaband = ctx["params"]["name_params"]["band"]["rotaband"]
+    outerband = ctx["params"]["name_params"]["band"]["outerband"]
 
     def iron_loss_setup():
         oBoundaryModule.SetCoreLoss(["stator", "rotor"], False)
@@ -96,3 +97,5 @@ def band_model(ansys_object, band_name_list):
     outer_band_setting(outerband_edge_id_list)
     draw_rota_band()
     rota_band_setting()
+
+    return ctx

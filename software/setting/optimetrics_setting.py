@@ -1,10 +1,11 @@
-def optimetrics_setting(oProject, oDesign, total_params, reset='set_first_time'):
-    max_power, max_speed = total_params["optiparametric_params"]["max_power"], total_params["optiparametric_params"]["max_speed"]
-    opt_name = "OPT"
-    oModule = oDesign.GetModule("Optimetrics")
+def optimetrics_setting(ctx):
+    max_power = ctx["params"]["optiparametric_params"]["max_power"]
+    max_speed = ctx["params"]["optiparametric_params"]["max_speed"]
+    opt_name = ctx["data"]["opt_name"]
+    opt_oModule = ctx["ansys_object"]["oDesign"].GetModule("Optimetrics")
 
     def opt_setting():
-        oModule.InsertSetup("OptiParametric",
+        opt_oModule.InsertSetup("OptiParametric",
                             [
                                 "NAME:" + opt_name,
                                 "IsEnabled:="		, True,
@@ -45,7 +46,7 @@ def optimetrics_setting(oProject, oDesign, total_params, reset='set_first_time')
                             ])
 
 #     def opt_re_setting(var_name, var_data):
-#         oModule.EditSetup(opt_name,
+#         opt_oModule.EditSetup(opt_name,
 #                           [
 #                               "NAME:" + opt_name,
 #                               "IsEnabled:="		, True,
@@ -88,4 +89,6 @@ def optimetrics_setting(oProject, oDesign, total_params, reset='set_first_time')
     #              opt_name_list, opt_data_list
     #              ))
 
-    return oModule, opt_name
+    ctx["data"]["opt_oModule"] = opt_oModule
+
+    return ctx

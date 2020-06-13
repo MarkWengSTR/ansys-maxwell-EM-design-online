@@ -2,11 +2,14 @@ from functional_pipeline import String, pipeline
 from functools import partial
 
 
-def current_excitation_setting(oDesign, coil_name_list, excitation_name_list):
+def current_excitation_setting(ctx):
     print('Set coil excitation')
 
-    oModule = oDesign.GetModule("BoundarySetup")
-    N, I_ph_A, I_ph_B, I_ph_C = excitation_name_list
+    oModule         = ctx["ansys_object"]["oDesign"].GetModule("BoundarySetup")
+    coil_name_list  = ctx["data"]["coil_name_list"]
+    excitation_name = ctx["params"]["name_params"]["excitation"]
+
+    N, I_ph_A, I_ph_B, I_ph_C = excitation_name["conductor_number"], excitation_name["phase_I_A"], excitation_name["phase_I_B"], excitation_name["phase_I_C"]
 
     def Add_winding_group(winding_name, phase_current):
         return oModule.AssignWindingGroup(
@@ -87,3 +90,5 @@ def current_excitation_setting(oDesign, coil_name_list, excitation_name_list):
                 partial(add_coil_to_winding, winding, polarity)
             ]
         )
+
+    return ctx
