@@ -1,3 +1,5 @@
+import os
+
 def create_report(report_moudule, data_name, x_axis):
     report_moudule.CreateReport(data_name, "Transient", "Rectangular Plot", "Setup1 : Transient",
                          [
@@ -54,10 +56,15 @@ def report_setting(ctx):
 
 
 def report_export(ctx):
+    export_path = ctx["data"]["export_path"]
+
+    if not os.path.isdir(export_path):
+        os.mkdir(export_path)
+
     for report_name, data_with_x_axis in ctx["params"]["report_list"].items():
         data_name, _ = data_with_x_axis
 
         ctx["data"]["report_moudule"].ExportToFile(
-            data_name, ctx["data"]["export_path"] + "\\" + report_name + ".csv")
+            data_name, export_path + "\\" + report_name + ".csv")
 
     return ctx

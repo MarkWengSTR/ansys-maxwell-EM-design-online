@@ -1,4 +1,6 @@
 import os
+import datetime
+import time
 
 from params.total_params_calculation import total_params_calculate
 
@@ -48,6 +50,8 @@ if __name__ == "__main__":
     #     "oEditor": oEditor,
     # }
 
+    time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
+
     ctx = {
         "params": total_params_calculate(),
         "ansys_object": find_or_initial_project(),
@@ -56,7 +60,7 @@ if __name__ == "__main__":
             "opt_name": "OPT",
             "opt_oModule": None,
             "report_moudule": None,
-            "export_path": os.path.join(os.getcwd(), "tmp"),
+            "export_path": os.path.join(os.getcwd(), "tmp", str(datetime.date.today()).replace("-", "_") + "_"+ time_stamp),
         }
     }
 
