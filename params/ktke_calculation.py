@@ -11,7 +11,7 @@ def ktke_validate(total_cal_params):
     spec_params["ke"] = round(
         (voltage_dc * voltage_buffer / 3**0.5) / ((max_speed_rpm * 2 * math.pi) / 60), 4)
 
-    spec_params["kt"] = round(spec_params["ke"] * 0.95, 4)
+    spec_params["kt"] = round(spec_params["ke"] * spec_params["kt_ke_ratio"], 4)
 
     spec_params["max_current_rms"] = round(
         (2**0.5 / 3) * (max_torque_nm / spec_params["kt"]))

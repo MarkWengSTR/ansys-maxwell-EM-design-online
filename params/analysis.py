@@ -1,6 +1,6 @@
 analysis_params = {
     "name": "setup1",
-    "stoptime": "0.05/f_ele",
+    "stoptime": "1/f_ele",
     "timestep": "1/f_ele/50"
 }
 

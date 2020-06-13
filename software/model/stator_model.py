@@ -119,7 +119,7 @@ def stator_model(ctx):
             "Transparency:="	, 0,
             "PartCoordinateSystem:=", "Global",
             "UDMId:="		, "",
-            "MaterialValue:="	, "\"35CS250_20190702\"",
+            "MaterialValue:="	, ctx["params"]["motor_cal_params"]["material"]["stator"],
             "SolveInside:="		, True
         ])
 

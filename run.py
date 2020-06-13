@@ -88,8 +88,8 @@ if __name__ == "__main__":
         analysis_setting(ctx) and \
         optimetrics_setting(ctx) and \
         save_project(ctx) and \
-        start_analysis(ctx) and \
         report_setting(ctx) and \
+        start_analysis(ctx) and \
         report_export(ctx)
 
     print('Simulation Completed')

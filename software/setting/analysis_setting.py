@@ -2,6 +2,8 @@ def analysis_setting(ctx):
     print('Analysis params setting')
 
     oModule = ctx["ansys_object"]["oDesign"].GetModule("AnalysisSetup")
+    stoptime = str(ctx["params"]["motor_cal_params"]["setting"]["cycle"]) + "/" + "(" + ctx["params"]["excitation_params"]["f_ele"] + ")"
+    timestep = stoptime + "/" + str(ctx["params"]["motor_cal_params"]["setting"]["split_step"])
 
     oModule.InsertSetup("Transient",
         [
@@ -9,8 +11,8 @@ def analysis_setting(ctx):
             "Enabled:="		, True,
             "NonlinearSolverResidual:=", "0.0001",
             "TimeIntegrationMethod:=", 0,
-            "StopTime:="		, ctx["params"]["analysis_params"]["stoptime"],
-            "TimeStep:="		, ctx["params"]["analysis_params"]["timestep"],
+            "StopTime:="		, stoptime,
+            "TimeStep:="		, timestep,
             "OutputError:="		, False,
             "UseControlProgram:="	, False,
             "ControlProgramName:="	, " ",

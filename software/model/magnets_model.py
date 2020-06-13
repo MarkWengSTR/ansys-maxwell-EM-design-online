@@ -92,7 +92,7 @@ def magnets_model(ctx):
             "Transparency:="	, 0,
             "PartCoordinateSystem:=", "Global",
             "UDMId:="		, "",
-            "MaterialValue:="	, "\"ZH_N44SH_20deg_20190702\"",
+            "MaterialValue:="	, ctx["params"]["motor_cal_params"]["material"]["magnet"],
             "SolveInside:="		, True
         ])
 

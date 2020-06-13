@@ -139,7 +139,7 @@ def coils_model(ctx):
             "Transparency:="	, 0,
             "PartCoordinateSystem:=", "Global",
             "UDMId:="		, "",
-            "MaterialValue:="	, "\"copper\"",
+            "MaterialValue:="	, ctx["params"]["motor_cal_params"]["material"]["coil"],
             "SolveInside:="		, True
         ])
 

@@ -1,5 +1,5 @@
 spec_params = {
-    "stator_OD_limit":  110,
+    "stator_OD_limit":  120,
     "torque_density":   25,
     "max_power":        5000,
     "max_J":            18,
@@ -10,6 +10,7 @@ spec_params = {
     "voltage_buffer":   0.9,
     "ke":               None,
     "kt":               None,
+    "kt_ke_ratio":      0.9,
     "error_present":    False,
     "error_msg":        None,
 }
@@ -53,6 +54,16 @@ motor_cal_params = {
         "para_conductor": None,
         "coil_turns": None,
         "real_slot_fill_factor": None,
+    },
+    "material": {
+        "stator": "\"35CS250_20190702\"",
+        "rotor": "\"35CS250_20190702\"",
+        "magnet": "\"ZH_N44SH_20deg_20190702\"",
+        "coil": "\"copper\"",
+    },
+    "setting": {
+        "cycle": 1,
+        "split_step": 50
     },
     "voltage_dc": None,
     "length": None,

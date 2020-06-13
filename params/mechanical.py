@@ -17,7 +17,7 @@ stator_params = {
 rotor_params = {
     "airgap": "0.5mm",
     "Dro": "Dsi - airgap*2",
-    "Dri": "30mm",
+    "Dri": "Dro * 0.5",
     "pole": "10",
     "rotor_type": "1",
     "mag_emb": "0.8",
