@@ -8,7 +8,6 @@ def params_setting(ctx):
 
     total_setting_params = {**params["stator_params"], **params["rotor_params"],
                             **params["motor_params"], **params["band_params"], **params["excitation_params"]}
-    # import ipdb; ipdb.set_trace()
 
     for params_name, params_value in total_setting_params.items():
         ctx["ansys_object"]["oDesign"].ChangeProperty(

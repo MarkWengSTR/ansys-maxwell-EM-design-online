@@ -1,27 +1,4 @@
 from params.ktke_calculation import mech_stucture_cal
-from params.spec import spec_params, motor_cal_params
-from params.mechanical import stator_params, rotor_params
-from params.motor import motor_params
-from params.excitation import excitation_params
-from params.band import band_params
-from params.name import name_params
-from params.analysis import analysis_params
-from params.optiparametric import optiparametric_params
-from params.report import report_list
-
-total_cal_params = {"spec_params": spec_params,
-                    "motor_cal_params": motor_cal_params,
-                    "stator_params": stator_params,
-                    "rotor_params": rotor_params,
-                    "motor_params": motor_params,
-                    "excitation_params": excitation_params,
-                    "band_params": band_params,
-                    "name_params": name_params,
-                    "analysis_params": analysis_params,
-                    "optiparametric_params": optiparametric_params,
-                    "report_list": report_list,
-                    }
-
 
 def stator_params_assign(total_cal_params):
     stator_params = total_cal_params["stator_params"]
@@ -85,7 +62,7 @@ def optiparametric_params_assign(total_cal_params):
     return total_cal_params
 
 
-def total_params_calculate():
+def total_params_calculate(total_cal_params):
     mech_stucture_cal(total_cal_params) and \
         stator_params_assign(total_cal_params) and \
         motor_params_assign(total_cal_params) and \
