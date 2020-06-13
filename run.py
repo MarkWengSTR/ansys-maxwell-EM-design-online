@@ -15,11 +15,9 @@ from params.report import report_list
 from params.total_params_calculation import total_params_calculate
 
 # project
-from software.project.ansys_python_interface import find_or_initial_project
+from software.project.ansys_python_interface import find_or_initial_project, save_project
 
 # modeling
-from software.setting.params_setting import params_setting
-
 from software.model.stator_model import stator_model
 from software.model.rotor_model import rotor_model
 from software.model.band_model import band_model
@@ -27,6 +25,7 @@ from software.model.magnets_model import magnets_model
 from software.model.coils_model import coils_model
 
 # setting
+from software.setting.params_setting import params_setting
 from software.setting.current_excitation_setting import current_excitation_setting
 from software.setting.model_setting import model_setting
 from software.setting.mesh_setting import mesh_setting
@@ -72,6 +71,7 @@ if __name__ == "__main__":
             "opt_name": "OPT",
             "opt_oModule": None,
             "report_moudule": None,
+            "time_stamp": time_stamp,
             "export_path": os.path.join(os.getcwd(), "tmp", str(datetime.date.today()).replace("-", "_") + "_"+ time_stamp),
         }
     }
@@ -87,6 +87,7 @@ if __name__ == "__main__":
         mesh_setting(ctx) and \
         analysis_setting(ctx) and \
         optimetrics_setting(ctx) and \
+        save_project(ctx) and \
         start_analysis(ctx) and \
         report_setting(ctx) and \
         report_export(ctx)

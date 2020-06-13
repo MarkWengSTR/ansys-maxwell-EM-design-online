@@ -58,9 +58,6 @@ def report_setting(ctx):
 def report_export(ctx):
     export_path = ctx["data"]["export_path"]
 
-    if not os.path.isdir(export_path):
-        os.mkdir(export_path)
-
     for report_name, data_with_x_axis in ctx["params"]["report_list"].items():
         data_name, _ = data_with_x_axis
 

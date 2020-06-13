@@ -1,6 +1,7 @@
 # python & ansoft connection
 
 from win32com import client
+import os
 
 
 def find_or_initial_project():
@@ -34,3 +35,14 @@ def find_or_initial_project():
     }
 
     return ansys_object
+
+def save_project(ctx):
+    export_path = ctx["data"]["export_path"]
+    time_stamp = ctx["data"]["time_stamp"]
+
+    if not os.path.isdir(export_path):
+        os.mkdir(export_path)
+
+    ctx["ansys_object"]["oProject"].SaveAs(export_path + "\\" + "project" + "_" + time_stamp + ".aedt", True)
+
+    return ctx
