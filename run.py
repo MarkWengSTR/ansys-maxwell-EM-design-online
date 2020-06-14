@@ -41,13 +41,7 @@ from software.setting.report_setting import report_setting, report_export
     # if geomotry_errors['error_present?']:
     #     raise BaseException(geomotry_errors['error_msg'])
 
-if __name__ == "__main__":
-    # ansys_object = {
-    #     "oProject": oProject,
-    #     "oDesign": oDesign,
-    #     "oEditor": oEditor,
-    # }
-
+def run_ansys(spec):
     total_cal_params = {
         "spec_params": spec_params,
         "motor_cal_params": motor_cal_params,
@@ -62,6 +56,12 @@ if __name__ == "__main__":
         "report_list": report_list,
                         }
     time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
+
+    # ansys_object = {
+    #     "oProject": oProject,
+    #     "oDesign": oDesign,
+    #     "oEditor": oEditor,
+    # }
 
     ctx = {
         "params": total_params_calculate(total_cal_params),
@@ -93,3 +93,9 @@ if __name__ == "__main__":
         report_export(ctx)
 
     print('Simulation Completed')
+
+    return ctx["params"]["motor_cal_params"]
+
+if __name__ == "__main__":
+    run_ansys({})
+

@@ -3,3 +3,5 @@ ramda==0.5.5
 six==1.13.0
 functional-pipeline==0.3.1
 ipdb==0.12.3
+Flask==1.1.2
+Flask-Cors==3.0.8
