@@ -1,6 +1,7 @@
 # python & ansoft connection
 
 from win32com import client
+import pythoncom
 import os
 
 
@@ -8,6 +9,7 @@ def find_or_initial_project(ctx):
     print('Initial project')
 
     # import ipdb; ipdb.set_trace()
+    pythoncom.CoInitialize()
     oAnsoftApp = client.Dispatch("Ansoft.ElectronicsDesktop")
 
     oDesktop = oAnsoftApp.GetAppDesktop()

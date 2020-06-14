@@ -7,10 +7,16 @@ app = Flask(__name__)
 CORS(app)  # local development cors
 
 
-@app.route('/run_ansys', methods=["POST"])
-def run_ansys():
+@app.route('/run_simu', methods=["POST"])
+def run_simulation():
     request_data = request.get_json()
-    return jsonify(request_data)
+
+    if not bool(request_data):
+        return jsonify({"msg": "not valid data"})
+
+    response_data = run_ansys(request_data)
+
+    return jsonify(response_data)
 
 
 if __name__ == "__main__":
