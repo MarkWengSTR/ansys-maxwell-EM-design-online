@@ -166,10 +166,6 @@ def mech_stucture_cal(total_cal_params):
         expend_stator_slot(total_cal_params) and \
         expend_magnet(total_cal_params)
 
-    if total_cal_params["spec_params"]["error_present"]:
-        print(total_cal_params["spec_params"])
-        raise BaseException(total_cal_params["spec_params"]["error_msg"])
-
     return total_cal_params
 
 # import ipdb; ipdb.set_trace()

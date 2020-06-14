@@ -34,12 +34,12 @@ def rotor_params_assign(total_cal_params):
     return total_cal_params
 
 
-def motor_params_assign(total_cal_params):
-    motor_params = total_cal_params["motor_params"]
+def other_motor_params_assign(total_cal_params):
+    other_motor_params = total_cal_params["other_motor_params"]
     cal_params = total_cal_params["motor_cal_params"]
 
-    motor_params["speed_rpm"] = str(cal_params["corner_speed_rpm"]) + "rpm"
-    motor_params["length"] = str(cal_params["length"]) + "mm"
+    other_motor_params["speed_rpm"] = str(cal_params["corner_speed_rpm"]) + "rpm"
+    other_motor_params["length"] = str(cal_params["length"]) + "mm"
 
     return total_cal_params
 
@@ -62,15 +62,20 @@ def optiparametric_params_assign(total_cal_params):
     return total_cal_params
 
 
-def total_params_calculate(total_cal_params):
+# import ipdb; ipdb.set_trace()
+def total_params_calculate(ctx):
+    total_cal_params = ctx["params"]
+
     mech_stucture_cal(total_cal_params) and \
         stator_params_assign(total_cal_params) and \
-        motor_params_assign(total_cal_params) and \
+        other_motor_params_assign(total_cal_params) and \
         excitation_params_assign(total_cal_params) and \
         optiparametric_params_assign(total_cal_params) and \
         rotor_params_assign(total_cal_params)
 
-    return total_cal_params
+    ctx["params"] = total_cal_params
+
+    return ctx
 
 # total_params_calculate()
 # import ipdb; ipdb.set_trace()

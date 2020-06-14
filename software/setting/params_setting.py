@@ -7,7 +7,7 @@ def params_setting(ctx):
     params = ctx["params"]
 
     total_setting_params = {**params["stator_params"], **params["rotor_params"],
-                            **params["motor_params"], **params["band_params"], **params["excitation_params"]}
+                            **params["other_motor_params"], **params["band_params"], **params["excitation_params"]}
 
     for params_name, params_value in total_setting_params.items():
         ctx["ansys_object"]["oDesign"].ChangeProperty(

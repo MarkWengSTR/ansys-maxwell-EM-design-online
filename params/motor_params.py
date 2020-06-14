@@ -1,13 +1,3 @@
-spec_params = {
-    "stator_OD_limit":  120,
-    "max_power":        5000,
-    "voltage_dc":       48,
-    "max_torque_nm":    27,
-    "max_speed_rpm":    5000,
-    "error_present":    False,
-    "error_msg":        None,
-}
-
 motor_cal_params = {
     "stator": {
         "OD_limit": None,

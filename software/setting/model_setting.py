@@ -10,11 +10,11 @@ def model_setting(ctx):
             "ComputeIncrementalMatrix:=", False,
             "PerfectConductorThreshold:=", 1E+030,
             "InsulatorThreshold:="	, 1,
-            "ModelDepth:="		, ctx["params"]["motor_params"]["length"],
+            "ModelDepth:="		, ctx["params"]["other_motor_params"]["length"],
             "UseSkewModel:="	, False,
             "EnableTranTranLinkWithSimplorer:=", False,
             "BackgroundMaterialName:=", "vacuum",
-            "Multiplier:="		, ctx["params"]["motor_params"]["multiplier"]
+            "Multiplier:="		, ctx["params"]["other_motor_params"]["multiplier"]
         ])
 
     return ctx

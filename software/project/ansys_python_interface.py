@@ -4,7 +4,7 @@ from win32com import client
 import os
 
 
-def find_or_initial_project():
+def find_or_initial_project(ctx):
     print('Initial project')
 
     # import ipdb; ipdb.set_trace()
@@ -28,13 +28,11 @@ def find_or_initial_project():
 
     oEditor = oDesign.SetActiveEditor("3D Modeler")
 
-    ansys_object = {
-        "oProject": oProject,
-        "oDesign": oDesign,
-        "oEditor": oEditor,
-    }
+    ctx["ansys_object"]["oProject"] = oProject
+    ctx["ansys_object"]["oDesign"] = oDesign
+    ctx["ansys_object"]["oEditor"] = oEditor
 
-    return ansys_object
+    return ctx
 
 def save_project(ctx):
     export_path = ctx["data"]["export_path"]
