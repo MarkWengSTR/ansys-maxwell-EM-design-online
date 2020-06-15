@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from run import run_ansys
+from api.validate import spec_present, data_type_validate, spec_keys_validate, ansys_overload_check
+ansys_processing_count = 0
 
 
 app = Flask(__name__)
@@ -9,14 +11,33 @@ CORS(app)  # local development cors
 
 @app.route('/run_simu', methods=["POST"])
 def run_simulation():
-    request_data = request.get_json()
+    global ansys_processing_count
+    ansys_processing_count += 1
 
-    if not bool(request_data):
-        return jsonify({"msg": "not valid data"})
+    ctx = {
+        "request": request.get_json(),
+        "response": {},
+        "allow_run": True,
+        "process": {
+            "limit": 4,
+            "count": ansys_processing_count,
+        },
+        "error": {
+            "validate": {"msg": ""}
+            }
+    }
 
-    response_data = run_ansys(request_data)
+    if spec_present(ctx) and \
+            data_type_validate(ctx) and \
+            spec_keys_validate(ctx) and \
+            ansys_overload_check(ctx):
+        ctx = run_ansys(ctx)
+    else:
+        return jsonify(ctx["error"]["validate"])
 
-    return jsonify(response_data)
+    ansys_processing_count -= 1
+
+    return jsonify(ctx["response"])
 
 
 if __name__ == "__main__":

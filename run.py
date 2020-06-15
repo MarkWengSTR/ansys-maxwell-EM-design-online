@@ -40,17 +40,18 @@ spec_params = {
     "voltage_dc":       48,
     "max_torque_nm":    27,
     "max_speed_rpm":    5000,
-    "error_present":    False,
-    "error_msg":        None,
 }
 
 
-def run_ansys(spec):
+def run_ansys(ctx):
+    spec= {**spec_params, **ctx["request"]}
+
     time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
 
     ctx = {
+        **ctx,
         "params": {
-            "spec_params": spec_params,
+            "spec_params": spec,
             "motor_cal_params": motor_cal_params,
             "stator_params": stator_params,
             "rotor_params": rotor_params,
@@ -77,27 +78,30 @@ def run_ansys(spec):
         }
     }
 
-    total_params_calculate(ctx) and \
-        find_or_initial_project(ctx) and \
-        params_setting(ctx) and \
-        stator_model(ctx) and \
-        rotor_model(ctx) and \
-        magnets_model(ctx) and \
-        coils_model(ctx) and \
-        current_excitation_setting(ctx) and \
-        model_setting(ctx) and \
-        band_model(ctx) and \
-        mesh_setting(ctx) and \
-        analysis_setting(ctx) and \
-        optimetrics_setting(ctx) and \
-        save_project(ctx) and \
-        report_setting(ctx) and \
-        start_analysis(ctx) and \
-        report_export(ctx)
+    total_params_calculate(ctx)
+    # total_params_calculate(ctx) and \
+    #     find_or_initial_project(ctx) and \
+    #     params_setting(ctx) and \
+    #     stator_model(ctx) and \
+    #     rotor_model(ctx) and \
+    #     magnets_model(ctx) and \
+    #     coils_model(ctx) and \
+    #     current_excitation_setting(ctx) and \
+    #     model_setting(ctx) and \
+    #     band_model(ctx) and \
+    #     mesh_setting(ctx) and \
+    #     analysis_setting(ctx) and \
+    #     optimetrics_setting(ctx) and \
+    #     save_project(ctx) and \
+    #     report_setting(ctx) and \
+    #     start_analysis(ctx) and \
+    #     report_export(ctx)
 
     print('Simulation Completed')
 
-    return ctx["params"]["motor_cal_params"]
+    ctx["response"] = ctx["params"]["motor_cal_params"]
+
+    return ctx
 
 
 if __name__ == "__main__":
