@@ -26,6 +26,9 @@ from software.setting.analysis_setting import analysis_setting, start_analysis
 from software.setting.optimetrics_setting import optimetrics_setting
 from software.setting.report_setting import report_setting, report_export
 
+# postprocess
+from postprocess.output import output
+
 # other
 # import ipdb; ipdb.set_trace()
 # from params.geometry_params_checking import geometry_params_checking
@@ -44,7 +47,7 @@ spec_params = {
 
 
 def run_ansys(ctx):
-    spec= {**spec_params, **ctx["request"]}
+    spec = {**spec_params, **ctx["request"]}
 
     time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
 
@@ -75,27 +78,53 @@ def run_ansys(ctx):
             "report_moudule": None,
             "time_stamp": time_stamp,
             "export_path": os.path.join(os.getcwd(), "tmp", str(datetime.date.today()).replace("-", "_") + "_" + time_stamp),
+        },
+        "response": {
+            "data_x_axis": [],
+            "corner_point": {
+                "torque_data": [],
+                "torque": None,
+                "torque_ripple": None,
+                "line_voltage_rms": None,
+                "speed": None,
+                "core_loss_x1": None,
+                "copper_loss": None,
+                "efficiency": None,
+                "output_power": None,
+                "motor_B_picture_path": None,
+            },
+            "noload": {
+                "ph_voltage_data": [],
+                "cogging_data": [],
+                "ph_voltage_rms": None,
+                "cogging": None,
+                "speed": 1000,
+            },
+            "max_speed": {
+                "line_voltage_rms": None,
+                "speed": 1000,
+            },
         }
     }
 
-    total_params_calculate(ctx)
-    # total_params_calculate(ctx) and \
-    #     find_or_initial_project(ctx) and \
-    #     params_setting(ctx) and \
-    #     stator_model(ctx) and \
-    #     rotor_model(ctx) and \
-    #     magnets_model(ctx) and \
-    #     coils_model(ctx) and \
-    #     current_excitation_setting(ctx) and \
-    #     model_setting(ctx) and \
-    #     band_model(ctx) and \
-    #     mesh_setting(ctx) and \
-    #     analysis_setting(ctx) and \
-    #     optimetrics_setting(ctx) and \
-    #     save_project(ctx) and \
-    #     report_setting(ctx) and \
-    #     start_analysis(ctx) and \
-    #     report_export(ctx)
+
+    total_params_calculate(ctx) and \
+        find_or_initial_project(ctx) and \
+        params_setting(ctx) and \
+        stator_model(ctx) and \
+        rotor_model(ctx) and \
+        magnets_model(ctx) and \
+        coils_model(ctx) and \
+        current_excitation_setting(ctx) and \
+        model_setting(ctx) and \
+        band_model(ctx) and \
+        mesh_setting(ctx) and \
+        analysis_setting(ctx) and \
+        optimetrics_setting(ctx) and \
+        save_project(ctx) and \
+        report_setting(ctx) and \
+        start_analysis(ctx) and \
+        report_export(ctx)
 
     print('Simulation Completed')
 

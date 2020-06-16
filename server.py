@@ -16,7 +16,6 @@ def run_simulation():
 
     ctx = {
         "request": request.get_json(),
-        "response": {},
         "allow_run": True,
         "process": {
             "limit": 4,
