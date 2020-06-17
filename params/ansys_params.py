@@ -17,7 +17,7 @@ stator_params = {
 rotor_params = {
     "airgap": "0.5mm",
     "Dro": "Dsi - airgap*2",
-    "Dri": "Dro * 0.5",
+    "Dri": "Dro * 0.4",
     "pole": "10",
     "rotor_type": "1",
     "mag_emb": "0.8",
@@ -76,10 +76,8 @@ optiparametric_params = {
 
 report_list = {
     "torque": ["Moving1.Torque", "Time"],
-    "torque_avg": ["mean(Moving1.Torque)", "Im"],
     "voltage_ph": ["InducedVoltage(Winding_A)", "Time"],
-    "voltage_rms":["rms(InducedVoltage(Winding_A))", "Im"],
-    "voltage_line":["InducedVoltage(Winding_A)-InducedVoltage(Winding_B)", "Time"],
-    "voltage_rms_line":["rms(InducedVoltage(Winding_A)-InducedVoltage(Winding_B))", "speed_rpm"],
+    "voltage_line": ["InducedVoltage(Winding_A)-InducedVoltage(Winding_B)", "Time"],
+    "coreloss": ["CoreLoss", "Time"],
 }
 

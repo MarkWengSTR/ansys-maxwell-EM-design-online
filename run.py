@@ -134,4 +134,4 @@ def run_ansys(ctx):
 
 
 if __name__ == "__main__":
-    run_ansys({"call": "just for test"})
+    run_ansys({"request": {"call": "just for test"}})
