@@ -22,16 +22,25 @@ from software.setting.params_setting import params_setting
 from software.setting.current_excitation_setting import current_excitation_setting
 from software.setting.model_setting import model_setting
 from software.setting.mesh_setting import mesh_setting
+from software.setting.material_setting import material_setting
 from software.setting.analysis_setting import analysis_setting, start_analysis
 from software.setting.optimetrics_setting import optimetrics_setting
 from software.setting.report_setting import report_setting, report_export
 from software.setting.export_plot_setting import export_model_picture
 
 # postprocess
-# from postprocess.output import output
+# from postprocess.result import result_process
+
+# debug
+# import ipdb; ipdb.set_trace()
+# from win32com import client
+# oAnsoftApp = client.Dispatch("Ansoft.ElectronicsDesktop")
+# oDesktop = oAnsoftApp.GetAppDesktop()
+# oProject = oDesktop.SetActiveProject("project_1592523833")
+# oDesign = oProject.SetActiveDesign("Maxwell2DDesign1")
+# oEditor = oDesign.SetActiveEditor("3D Modeler")
 
 # other
-# import ipdb; ipdb.set_trace()
 # from params.geometry_params_checking import geometry_params_checking
 # geomotry_errors = geometry_params_checking({**stator_params, **rotor_params})
 
@@ -93,7 +102,8 @@ def run_ansys(ctx):
                 "copper_loss": None,
                 "efficiency": None,
                 "output_power": None,
-                "motor_B_picture_path": None,
+                "model_picture_path": None,
+                "current density": None,
             },
             "noload": {
                 "ph_voltage_data": [],
@@ -109,11 +119,11 @@ def run_ansys(ctx):
         }
     }
 
-
     total_params_calculate(ctx) and \
         find_or_initial_project(ctx) and \
         save_project(ctx) and \
         params_setting(ctx) and \
+        material_setting(ctx) and \
         stator_model(ctx) and \
         rotor_model(ctx) and \
         magnets_model(ctx) and \
@@ -131,7 +141,7 @@ def run_ansys(ctx):
 
     print('Simulation Completed')
 
-    ctx["response"] = ctx["params"]["motor_cal_params"]
+    # ctx["response"] = ctx["params"]["motor_cal_params"]
 
     return ctx
 

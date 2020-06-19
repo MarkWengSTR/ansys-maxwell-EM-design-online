@@ -28,8 +28,6 @@ def export_model_bmp(ctx):
 
     return ctx
 
-# from win32com import client
-
 # def get_face_id(internal_ctx):
 #     for object_name in internal_ctx["object_name_list"]:
 #         internal_ctx["data"]["face_ids"] += [internal_ctx["oEditor"].GetFaceIDs(object_name)[0]]
@@ -177,13 +175,6 @@ def export_model_bmp(ctx):
 #     return ctx
 
 # export_flux_density({})
-    # oAnsoftApp = client.Dispatch("Ansoft.ElectronicsDesktop")
-
-    # oDesktop = oAnsoftApp.GetAppDesktop()
-    # oProject = oDesktop.SetActiveProject("project_1592523833")
-    # oDesign = oProject.SetActiveDesign("Maxwell2DDesign1")
-    # oEditor = oDesign.SetActiveEditor("3D Modeler")
-
     # internal_ctx = {
     #     "path": "./flux_density.bmp",
     #     "oEditor": oEditor,

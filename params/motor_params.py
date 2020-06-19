@@ -42,9 +42,9 @@ motor_cal_params = {
         "real_slot_fill_factor": None,
     },
     "material": {
-        "stator": "\"35CS250_20190702\"",
-        "rotor": "\"35CS250_20190702\"",
-        "magnet": "\"ZH_N44SH_20deg_20190702\"",
+        "stator": "\"35CS250_steel\"",
+        "rotor": "\"35CS250_steel\"",
+        "magnet": "\"N44SH_20deg_mag\"",
         "coil": "\"copper\"",
     },
     "setting": {
@@ -62,3 +62,9 @@ motor_cal_params = {
     "max_current_rms":  None,
 }
 
+# "material": {
+#     "stator": "\"35CS250_20190702\"",
+#     "rotor": "\"35CS250_20190702\"",
+#     "magnet": "\"ZH_N44SH_20deg_20190702\"",
+#     "coil": "\"copper\"",
+# },
