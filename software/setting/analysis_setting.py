@@ -29,6 +29,36 @@ def analysis_setting(ctx):
             "TimeStepErrTolerance:=", 0.0001
         ])
 
+    oModule.EditSetup("setup1",
+            [
+                    "NAME:" + ctx["params"]["analysis_params"]["name"],
+                    "Enabled:="		, True,
+                    "NonlinearSolverResidual:=", "0.0001",
+                    "TimeIntegrationMethod:=", 0,
+                    "SmoothBHCurve:="	, False,
+                    "StopTime:="		, stoptime,
+                    "TimeStep:="		, timestep,
+                    "OutputError:="		, False,
+                    "UseControlProgram:="	, False,
+                    "ControlProgramName:="	, " ",
+                    "ControlProgramArg:="	, " ",
+                    "CallCtrlProgAfterLastStep:=", False,
+                    "FastReachSteadyState:=", False,
+                    "AutoDetectSteadyState:=", False,
+                    "IsGeneralTransient:="	, True,
+                    "IsHalfPeriodicTransient:=", False,
+                    "HasSweepSetup:="	, True,
+                    "SweepSetupType:="	, "LinearStep",
+                    "StartValue:="		, "0s",
+                    "StopValue:="		, "10000000s",
+                    "StepSize:="		, "5000000s",
+                    "UseAdaptiveTimeStep:="	, False,
+                    "InitialTimeStep:="	, "0.002s",
+                    "MinTimeStep:="		, "0.001s",
+                    "MaxTimeStep:="		, "0.003s",
+                    "TimeStepErrTolerance:=", 0.0001
+            ])
+
     return ctx
 
 def start_analysis(ctx):

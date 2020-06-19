@@ -4,6 +4,7 @@ def rotor_model(ctx):
     print('Draw rotor model')
 
     rotor_params = ctx["params"]["rotor_params"]
+    model_name = ctx["params"]["name_params"]["rotor"]
 
     ctx["ansys_object"]["oEditor"].CreateUserDefinedPart(
         [
@@ -83,7 +84,7 @@ def rotor_model(ctx):
         ],
         [
             "NAME:Attributes",
-            "Name:="		, "rotor",
+            "Name:="		, model_name,
             "Flags:="		, "",
             "Color:="		, "(143 175 143)",
             "Transparency:="	, 0,

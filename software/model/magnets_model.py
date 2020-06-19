@@ -115,164 +115,177 @@ def magnets_model(ctx):
                 "DuplicateAssignments:=", False
             ])
 
-    def muti_vector_set():
-        def vector_set(pole_num, mag_arrange_angle, direction):
-            psi_direction = {
-                "N": "0deg",
-                "S": "180deg"
-            }
-            oEditor.SetWCS(
-                [
-                    "NAME:SetWCS Parameter",
-                    "Working Coordinate System:=", "Global",
-                    "RegionDepCSOk:="	, False
-                ])
-            oEditor.CreateRelativeCS(
-                [
-                    "NAME:RelativeCSParameters",
-                    "Mode:="		, "Axis/Position",
-                    "OriginX:="		, "0mm",
-                    "OriginY:="		, "0mm",
-                    "OriginZ:="		, "0mm",
-                    "XAxisXvec:="		, "21mm",
-                    "XAxisYvec:="		, "0mm",
-                    "XAxisZvec:="		, "0mm",
-                    "YAxisXvec:="		, "-0mm",
-                    "YAxisYvec:="		, "21mm",
-                    "YAxisZvec:="		, "0mm"
-                ],
-                [
-                    "NAME:Attributes",
-                    "Name:="		, "RelativeCS" + str(pole_num)
-                ])
-            oEditor.ChangeProperty(
-                [
-                    "NAME:AllTabs",
-                    [
-                        "NAME:Geometry3DCSTab",
-                        [
-                            "NAME:PropServers",
-                            "RelativeCS" + str(pole_num)
-                        ],
-                        [
-                            "NAME:ChangedProps",
-                            [
-                                "NAME:Mode",
-                                "Value:="		, "Euler Angle ZXZ"
-                            ]
-                        ]
-                    ]
-                ])
-            oEditor.ChangeProperty(
-                [
-                    "NAME:AllTabs",
-                    [
-                        "NAME:Geometry3DCSTab",
-                        [
-                            "NAME:PropServers",
-                            "RelativeCS" + str(pole_num)
-                        ],
-                        [
-                            "NAME:ChangedProps",
-                            [
-                                "NAME:Psi",
-                                "Value:="		, psi_direction[direction]
-                            ]
-                        ]
-                    ]
-                ])
-            oEditor.ChangeProperty(
-                [
-                    "NAME:AllTabs",
-                    [
-                        "NAME:Geometry3DCSTab",
-                        [
-                            "NAME:PropServers",
-                            "RelativeCS" + str(pole_num)
-                        ],
-                        [
-                            "NAME:ChangedProps",
-                            [
-                                "NAME:Phi",
-                                "Value:="		, str(mag_arrange_angle) + "deg"
-                            ]
-                        ]
-                    ]
-                ])
-            oEditor.SetWCS(
-                [
-                    "NAME:SetWCS Parameter",
-                    "Working Coordinate System:=", "Global",
-                    "RegionDepCSOk:="	, False
-                ])
+        return True
 
-        def set_vector_to_mag(pole_num):
-            # magnet number: magnet, magner_1, magnet_2 ...
+    def vector_set(pole_num, mag_arrange_angle, direction):
+        psi_direction = {
+            "N": "0deg",
+            "S": "180deg"
+        }
+        oEditor.SetWCS(
+            [
+                "NAME:SetWCS Parameter",
+                "Working Coordinate System:=", "Global",
+                "RegionDepCSOk:="	, False
+            ])
+        oEditor.CreateRelativeCS(
+            [
+                "NAME:RelativeCSParameters",
+                "Mode:="		, "Axis/Position",
+                "OriginX:="		, "0mm",
+                "OriginY:="		, "0mm",
+                "OriginZ:="		, "0mm",
+                "XAxisXvec:="		, "21mm",
+                "XAxisYvec:="		, "0mm",
+                "XAxisZvec:="		, "0mm",
+                "YAxisXvec:="		, "-0mm",
+                "YAxisYvec:="		, "21mm",
+                "YAxisZvec:="		, "0mm"
+            ],
+            [
+                "NAME:Attributes",
+                "Name:="		, "RelativeCS" + str(pole_num)
+            ])
+        oEditor.ChangeProperty(
+            [
+                "NAME:AllTabs",
+                [
+                    "NAME:Geometry3DCSTab",
+                    [
+                        "NAME:PropServers",
+                        "RelativeCS" + str(pole_num)
+                    ],
+                    [
+                        "NAME:ChangedProps",
+                        [
+                            "NAME:Mode",
+                            "Value:="		, "Euler Angle ZXZ"
+                        ]
+                    ]
+                ]
+            ])
+        oEditor.ChangeProperty(
+            [
+                "NAME:AllTabs",
+                [
+                    "NAME:Geometry3DCSTab",
+                    [
+                        "NAME:PropServers",
+                        "RelativeCS" + str(pole_num)
+                    ],
+                    [
+                        "NAME:ChangedProps",
+                        [
+                            "NAME:Psi",
+                            "Value:="		, psi_direction[direction]
+                        ]
+                    ]
+                ]
+            ])
+        oEditor.ChangeProperty(
+            [
+                "NAME:AllTabs",
+                [
+                    "NAME:Geometry3DCSTab",
+                    [
+                        "NAME:PropServers",
+                        "RelativeCS" + str(pole_num)
+                    ],
+                    [
+                        "NAME:ChangedProps",
+                        [
+                            "NAME:Phi",
+                            "Value:="		, str(mag_arrange_angle) + "deg"
+                        ]
+                    ]
+                ]
+            ])
+        oEditor.SetWCS(
+            [
+                "NAME:SetWCS Parameter",
+                "Working Coordinate System:=", "Global",
+                "RegionDepCSOk:="	, False
+            ])
+
+    def set_vector_to_mag(pole_num):
+        # magnet number: magnet, magner_1, magnet_2 ...
+        number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
+
+        oEditor.ChangeProperty(
+            [
+                "NAME:AllTabs",
+                [
+                    "NAME:Geometry3DAttributeTab",
+                    [
+                        "NAME:PropServers",
+                        "magnet" + number_in_name
+                    ],
+                    [
+                        "NAME:ChangedProps",
+                        [
+                            "NAME:Orientation",
+                            "Value:="		, "RelativeCS" + str(pole_num)
+                        ]
+                    ]
+                ]
+            ])
+
+    def set_mag_color(pole_num, direction):
+        number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
+
+        coil_color_dir = {
+            "N":  ["NAME:Color", "R:=", 255, "G:=", 0, "B:=", 0],
+            "S":  ["NAME:Color", "R:=", 0, "G:=", 0, "B:=", 255],
+        }
+
+        oEditor.ChangeProperty(
+            [
+                "NAME:AllTabs",
+                [
+                    "NAME:Geometry3DAttributeTab",
+                    [
+                        "NAME:PropServers",
+                        "magnet" + number_in_name
+                    ],
+                    [
+                        "NAME:ChangedProps",
+                        coil_color_dir[direction]
+                    ]
+                ]
+            ])
+
+    def prepare_mag_name_list(ctx):
+        for pole_num in list(range(rotor_pole)):
             number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
 
-            oEditor.ChangeProperty(
-                [
-                    "NAME:AllTabs",
-                    [
-                        "NAME:Geometry3DAttributeTab",
-                        [
-                            "NAME:PropServers",
-                            "magnet" + number_in_name
-                        ],
-                        [
-                            "NAME:ChangedProps",
-                            [
-                                "NAME:Orientation",
-                                "Value:="		, "RelativeCS" + str(pole_num)
-                            ]
-                        ]
-                    ]
-                ])
+            ctx["data"]["mag_name_list"] += ["magnet" + number_in_name]
 
-        def set_mag_color(pole_num, direction):
-            number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
-            coil_color_dir = {
-                "N":  ["NAME:Color", "R:=", 255, "G:=", 0, "B:=", 0],
-                "S":  ["NAME:Color", "R:=", 0, "G:=", 0, "B:=", 255],
-            }
+        return ctx
 
-            oEditor.ChangeProperty(
-                [
-                    "NAME:AllTabs",
-                    [
-                        "NAME:Geometry3DAttributeTab",
-                        [
-                            "NAME:PropServers",
-                            "magnet" + number_in_name
-                        ],
-                        [
-                            "NAME:ChangedProps",
-                            coil_color_dir[direction]
-                        ]
-                    ]
-                ])
 
-        def set_color_vector_to_each_magnet():
-            # magnet_number is 0..rotor_pole-1
-            ini_angle = (360 / rotor_pole / 2)
-            angle = (360 / rotor_pole)
+    def set_color_vector_to_each_magnet():
+        # magnet_number is 0..rotor_pole-1
+        ini_angle = (360 / rotor_pole / 2)
+        angle = (360 / rotor_pole)
 
-            pole_no_list = list(range(rotor_pole))
-            angle_list = list(map(
-                lambda p_no: (ini_angle + p_no*angle),
-                pole_no_list))
-            direction_list = list(map(
-                lambda p_no: ("S" if (p_no % 2 == 1) else "N"),
-                pole_no_list))
+        pole_no_list = list(range(rotor_pole))
+        angle_list = list(map(
+            lambda p_no: (ini_angle + p_no*angle),
+            pole_no_list))
+        direction_list = list(map(
+            lambda p_no: ("S" if (p_no % 2 == 1) else "N"),
+            pole_no_list))
 
-            list(map(vector_set, pole_no_list, angle_list, direction_list))
-            list(map(set_vector_to_mag, pole_no_list))
-            list(map(set_mag_color, pole_no_list, direction_list))
+        list(map(vector_set, pole_no_list, angle_list, direction_list))
+        list(map(set_vector_to_mag, pole_no_list))
+        list(map(set_mag_color, pole_no_list, direction_list))
 
-        set_color_vector_to_each_magnet()
+        return True
+
 
     # exec function
-    muti_mag()
-    muti_vector_set()
+    muti_mag() and \
+        set_color_vector_to_each_magnet() and \
+        prepare_mag_name_list(ctx)
 
     return ctx

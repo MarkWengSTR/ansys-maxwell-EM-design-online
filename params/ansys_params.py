@@ -50,6 +50,8 @@ band_params = {
 }
 
 name_params = {
+    "stator": "stator",
+    "rotor": "rotor",
     "band": {
         "rotaband": "rotaband",
         "outerband": "outerband",

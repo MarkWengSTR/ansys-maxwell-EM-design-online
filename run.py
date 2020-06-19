@@ -25,9 +25,10 @@ from software.setting.mesh_setting import mesh_setting
 from software.setting.analysis_setting import analysis_setting, start_analysis
 from software.setting.optimetrics_setting import optimetrics_setting
 from software.setting.report_setting import report_setting, report_export
+from software.setting.export_plot_setting import export_model_picture
 
 # postprocess
-from postprocess.output import output
+# from postprocess.output import output
 
 # other
 # import ipdb; ipdb.set_trace()
@@ -72,7 +73,8 @@ def run_ansys(ctx):
             "oEditor": None,
         },
         "data": {
-            "coil_name_list": None,
+            "coil_name_list": [],
+            "mag_name_list": [],
             "opt_name": "OPT",
             "opt_oModule": None,
             "report_moudule": None,
@@ -110,18 +112,19 @@ def run_ansys(ctx):
 
     total_params_calculate(ctx) and \
         find_or_initial_project(ctx) and \
+        save_project(ctx) and \
         params_setting(ctx) and \
         stator_model(ctx) and \
         rotor_model(ctx) and \
         magnets_model(ctx) and \
         coils_model(ctx) and \
+        export_model_picture(ctx) and \
         current_excitation_setting(ctx) and \
         model_setting(ctx) and \
         band_model(ctx) and \
         mesh_setting(ctx) and \
         analysis_setting(ctx) and \
         optimetrics_setting(ctx) and \
-        save_project(ctx) and \
         report_setting(ctx) and \
         start_analysis(ctx) and \
         report_export(ctx)
