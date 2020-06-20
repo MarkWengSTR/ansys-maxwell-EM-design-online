@@ -16,7 +16,9 @@ def fit_model_view(ctx):
     return ctx
 
 def export_model_bmp(ctx):
-    ctx["ansys_object"]["oEditor"].ExportModelImageToFile(ctx["data"]["export_path"] + "\\" + "model.bmp", 0, 0,
+    picture_path = ctx["data"]["export_path"] + "\\" + "model.bmp"
+
+    ctx["ansys_object"]["oEditor"].ExportModelImageToFile(picture_path, 0, 0,
             [
                     "NAME:SaveImageParams",
                     "ShowAxis:="		, "True",
@@ -25,6 +27,8 @@ def export_model_bmp(ctx):
                     "ShowRegion:="		, "Default",
                     "Selections:="		, ""
             ])
+
+    ctx["data"]["model_picture_path"] = picture_path
 
     return ctx
 

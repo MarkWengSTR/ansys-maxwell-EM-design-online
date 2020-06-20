@@ -18,7 +18,7 @@ motor_cal_params = {
         "slot_fill_factor": 0.43,
     },
     "estimate": {
-        "kt_ke_ratio":      0.9,
+        "kt_ke_ratio": 0.9,
         "max_J": 18,
         "voltage_buffer": 0.9,
         "torque_density":   25,

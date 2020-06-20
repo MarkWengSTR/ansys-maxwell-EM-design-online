@@ -29,7 +29,7 @@ from software.setting.report_setting import report_setting, report_export
 from software.setting.export_plot_setting import export_model_picture
 
 # postprocess
-# from postprocess.result import result_process
+from postprocess.result import result_process
 
 # debug
 # import ipdb; ipdb.set_trace()
@@ -89,15 +89,17 @@ def run_ansys(ctx):
             "report_moudule": None,
             "time_stamp": time_stamp,
             "export_path": os.path.join(os.getcwd(), "tmp", str(datetime.date.today()).replace("-", "_") + "_" + time_stamp),
+            "model_picture_path": None,
         },
         "response": {
-            "data_x_axis": [],
+            "ele_ang_x_axis": [],
             "corner_point": {
+                "current": None,
+                "speed": None,
                 "torque_data": [],
-                "torque": None,
+                "avg_torque": None,
                 "torque_ripple": None,
                 "line_voltage_rms": None,
-                "speed": None,
                 "core_loss_x1": None,
                 "copper_loss": None,
                 "efficiency": None,
@@ -114,7 +116,7 @@ def run_ansys(ctx):
             },
             "max_speed": {
                 "line_voltage_rms": None,
-                "speed": 1000,
+                "speed": None,
             },
         }
     }

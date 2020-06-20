@@ -6,3 +6,4 @@ ipdb==0.12.3
 Flask==1.1.2
 Flask-Cors==3.0.8
 pandas==1.0.1
+numpy==1.18.1
