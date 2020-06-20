@@ -5,13 +5,14 @@ def material_setting(ctx):
         "module": ctx["ansys_object"]["oProject"].GetDefinitionManager(),
     }
 
+    print("material setting")
     add_magnet_setting(material_ctx) and \
         add_steel_setting(material_ctx)
 
     return ctx
 
 def add_magnet_setting(material_ctx):
-    if not bool(material_ctx["module"].DoesMaterialExist(material_ctx["magnet_name"])):
+    if bool(material_ctx["module"].DoesMaterialExist(material_ctx["magnet_name"])):
         None
     else:
         material_ctx["module"].AddMaterial(
@@ -37,7 +38,7 @@ def add_magnet_setting(material_ctx):
     return material_ctx
 
 def add_steel_setting(material_ctx):
-    if not bool(material_ctx["module"].DoesMaterialExist(material_ctx["steel_name"])):
+    if bool(material_ctx["module"].DoesMaterialExist(material_ctx["steel_name"])):
         None
     else:
         material_ctx["module"].AddMaterial(
