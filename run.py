@@ -48,11 +48,12 @@ from postprocess.result import result_process
 #     raise BaseException(geomotry_errors['error_msg'])
 
 spec_params = {
-    "stator_OD_limit":  120,
-    "max_power":        5000,
-    "voltage_dc":       48,
-    "max_torque_nm":    27,
-    "max_speed_rpm":    5000,
+    "stator_OD_limit": 120,
+    "max_power":       5000,
+    "voltage_dc":      48,
+    "max_torque_nm":   27,
+    "max_speed_rpm":   5000,
+    "export_path":     None
 }
 
 
@@ -90,7 +91,7 @@ def run_ansys(ctx):
             "opt_oModule": None,
             "report_moudule": None,
             "time_stamp": time_stamp,
-            "export_path": os.path.join(os.getcwd(), "tmp", project_name),
+            "export_path": spec["export_path"] or os.path.join(os.getcwd(), "tmp", project_name),
             "model_picture_path": None,
         },
         "response": {
