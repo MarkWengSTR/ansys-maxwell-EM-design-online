@@ -60,6 +60,7 @@ def run_ansys(ctx):
     spec = {**spec_params, **ctx["request"]}
 
     time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
+    project_name = str(datetime.date.today()).replace("-", "_") + "_" + time_stamp
 
     ctx = {
         **ctx,
@@ -82,16 +83,18 @@ def run_ansys(ctx):
             "oEditor": None,
         },
         "data": {
+            "project_name": project_name,
             "coil_name_list": [],
             "mag_name_list": [],
             "opt_name": "OPT",
             "opt_oModule": None,
             "report_moudule": None,
             "time_stamp": time_stamp,
-            "export_path": os.path.join(os.getcwd(), "tmp", str(datetime.date.today()).replace("-", "_") + "_" + time_stamp),
+            "export_path": os.path.join(os.getcwd(), "tmp", project_name),
             "model_picture_path": None,
         },
         "response": {
+            "model_picture_path": None,
             "ele_ang_x_axis": [],
             "corner_point": {
                 "current": None,
@@ -100,12 +103,12 @@ def run_ansys(ctx):
                 "avg_torque": None,
                 "torque_ripple": None,
                 "line_voltage_rms": None,
-                "core_loss_x1": None,
+                "core_loss": None,
+                "core_loss_factor": None,
                 "copper_loss": None,
                 "efficiency": None,
                 "output_power": None,
-                "model_picture_path": None,
-                "current density": None,
+                "current_density": None,
             },
             "noload": {
                 "ph_voltage_data": [],
@@ -139,7 +142,8 @@ def run_ansys(ctx):
         optimetrics_setting(ctx) and \
         report_setting(ctx) and \
         start_analysis(ctx) and \
-        report_export(ctx)
+        report_export(ctx) and \
+        result_process(ctx)
 
     print('Simulation Completed')
 

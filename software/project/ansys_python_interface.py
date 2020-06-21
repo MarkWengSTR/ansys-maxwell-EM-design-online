@@ -6,7 +6,8 @@ import os
 
 
 def find_or_initial_project(ctx):
-    print('Initial project')
+    print('Initial project: ' + ctx["data"]["project_name"])
+    print(ctx["params"]["spec_params"])
 
     # import ipdb; ipdb.set_trace()
     pythoncom.CoInitialize()
