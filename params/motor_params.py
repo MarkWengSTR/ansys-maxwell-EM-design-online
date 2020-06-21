@@ -60,6 +60,7 @@ motor_cal_params = {
     "corner_speed_rpm": None,
     "max_speed_rpm":    None,
     "max_current_rms":  None,
+    "core_loss_factor": 1,
 }
 
 # "material": {

@@ -25,6 +25,9 @@ def result_process(ctx):
                 "copper_ele_resistivity": 1/58,
                 "correct_ratio": 1.2,
             },
+        },
+        "result": {
+            "model_picture_path": ctx["data"]["model_picture_path"],
             "ele_ang_x_axis": [],
             "corner_point": {
                 "current": motor_cal_params["max_current_rms"],
@@ -33,12 +36,12 @@ def result_process(ctx):
                 "avg_torque": None,
                 "torque_ripple": None,
                 "line_voltage_rms": None,
-                "core_loss_x1": None,
+                "core_loss": None,
+                "core_loss_factor": motor_cal_params["core_loss_factor"],
                 "copper_loss": None,
                 "efficiency": None,
                 "output_power": None,
-                "model_picture_path": ctx["data"]["model_picture_path"],
-                "current density": motor_cal_params["estimate"]["max_J"],
+                "current_density": motor_cal_params["estimate"]["max_J"],
             },
             "noload": {
                 "ph_voltage_data": [],
@@ -50,7 +53,7 @@ def result_process(ctx):
             "max_speed": {
                 "line_voltage_rms": None,
                 "speed": motor_cal_params["max_speed_rpm"],
-            }
+            },
         }
     }
 
@@ -58,55 +61,53 @@ def result_process(ctx):
         process_toruqe(result_ctx) and \
         process_voltage(result_ctx) and \
         process_core_loss(result_ctx) and \
-        process_copper_loss(result_ctx)
+        process_copper_loss(result_ctx) and \
+        process_efficiency(result_ctx)
 
-    ctx["response"] = {**ctx["response"], **result_ctx["data"]}
+    ctx["response"] = {**ctx["response"], **result_ctx["result"]}
 
     return ctx
 
 
 def prepare_x_axis_ele_ang(result_ctx):
-    step_ang = 360 / result_ctx["data"]["total_step"]
+    step_ang = 360 / result_ctx["total_step"]
 
-    result_ctx["data"]["ele_ang_x_axis"] = np.arange(
+    result_ctx["result"]["ele_ang_x_axis"] = np.arange(
         0, 360 + step_ang, step_ang).tolist()
 
     return result_ctx
 
 
 def process_toruqe(result_ctx):
-    tq_df = pd.read_csv(os.path.join(os.getcwd(), "tmp",
-                                     "2020_06_19_1592578043", "torque.csv"))
-    noload_speed = result_ctx["data"]["noload"]["speed"]
-    corner_current = result_ctx["data"]["corner_point"]["current"]
-    corner_speed = result_ctx["data"]["corner_point"]["speed"]
+    tq_df = pd.read_csv(os.path.join(result_ctx["data_path"], "torque.csv"))
+    noload_speed = result_ctx["result"]["noload"]["speed"]
+    corner_current = result_ctx["result"]["corner_point"]["current"]
+    corner_speed = result_ctx["result"]["corner_point"]["speed"]
 
     cogging_data_arr = tq_df.filter(like="0A").filter(
         like=str(noload_speed) + "rpm").dropna().values.flatten()
     torque_data_arr = tq_df.filter(like=str(corner_current) + "A").filter(
         like=str(corner_speed) + "rpm").dropna().values.flatten()
 
-    result_ctx["data"]["noload"]["cogging_data"] = cogging_data_arr.tolist()
-    result_ctx["data"]["noload"]["cogging"] = cogging_data_arr.max() - \
+    result_ctx["result"]["noload"]["cogging_data"] = cogging_data_arr.tolist()
+    result_ctx["result"]["noload"]["cogging"] = cogging_data_arr.max() - \
         cogging_data_arr.min()
 
-    result_ctx["data"]["corner_point"]["torque_data"] = torque_data_arr.tolist()
-    result_ctx["data"]["corner_point"]["avg_torque"] = torque_data_arr.mean()
-    result_ctx["data"]["corner_point"]["torque_ripple"] = (
+    result_ctx["result"]["corner_point"]["torque_data"] = torque_data_arr.tolist()
+    result_ctx["result"]["corner_point"]["avg_torque"] = torque_data_arr.mean()
+    result_ctx["result"]["corner_point"]["torque_ripple"] = (
         torque_data_arr.max() - torque_data_arr.min()) / torque_data_arr.mean() * 100
 
     return result_ctx
 
 
 def process_voltage(result_ctx):
-    vol_ph = pd.read_csv(os.path.join(os.getcwd(), "tmp",
-                                      "2020_06_19_1592578043", "voltage_ph.csv"))
-    vol_line = pd.read_csv(os.path.join(os.getcwd(), "tmp",
-                                        "2020_06_19_1592578043", "voltage_line.csv"))
-    noload_speed   = result_ctx["data"]["noload"]["speed"]
-    corner_current = result_ctx["data"]["corner_point"]["current"]
-    corner_speed   = result_ctx["data"]["corner_point"]["speed"]
-    max_speed      = result_ctx["data"]["max_speed"]["speed"]
+    vol_ph = pd.read_csv(os.path.join(result_ctx["data_path"], "voltage_ph.csv"))
+    vol_line = pd.read_csv(os.path.join(result_ctx["data_path"], "voltage_line.csv"))
+    noload_speed   = result_ctx["result"]["noload"]["speed"]
+    corner_current = result_ctx["result"]["corner_point"]["current"]
+    corner_speed   = result_ctx["result"]["corner_point"]["speed"]
+    max_speed      = result_ctx["result"]["max_speed"]["speed"]
 
     bemf_ph_data_arr = vol_ph.filter(like="0A").filter(
         like=str(noload_speed) + "rpm").dropna().values.flatten()
@@ -115,27 +116,27 @@ def process_voltage(result_ctx):
     cor_vol_data_arr = vol_line.filter(like=str(corner_current) + "A").filter(
         like=str(corner_speed) + "rpm").dropna().values.flatten()
 
-    result_ctx["data"]["noload"]["ph_voltage_rms"] = np_rms(bemf_ph_data_arr)
-    result_ctx["data"]["max_speed"]["line_voltage_rms"] = np_rms(bemf_line_data_arr) * (max_speed / noload_speed)
-    result_ctx["data"]["corner_point"]["line_voltage_rms"] = np_rms(cor_vol_data_arr)
+    result_ctx["result"]["noload"]["ph_voltage_data"] = bemf_ph_data_arr.tolist()
+    result_ctx["result"]["noload"]["ph_voltage_rms"] = np_rms(bemf_ph_data_arr)
+    result_ctx["result"]["max_speed"]["line_voltage_rms"] = np_rms(bemf_line_data_arr) * (max_speed / noload_speed)
+    result_ctx["result"]["corner_point"]["line_voltage_rms"] = np_rms(cor_vol_data_arr)
 
     return result_ctx
 
 def process_core_loss(result_ctx):
-    core_loss = pd.read_csv(os.path.join(os.getcwd(), "tmp",
-                                      "2020_06_19_1592578043", "coreloss.csv"))
-    corner_current = result_ctx["data"]["corner_point"]["current"]
-    corner_speed = result_ctx["data"]["corner_point"]["speed"]
+    core_loss = pd.read_csv(os.path.join(result_ctx["data_path"], "coreloss.csv"))
+    corner_current = result_ctx["result"]["corner_point"]["current"]
+    corner_speed = result_ctx["result"]["corner_point"]["speed"]
 
     cor_core_loss_data_arr = core_loss.filter(like=str(corner_current) + "A").filter(
         like=str(corner_speed) + "rpm").dropna().values.flatten()
 
-    result_ctx["data"]["corner_point"]["core_loss_x1"] = cor_core_loss_data_arr[-5:].mean()
+    result_ctx["result"]["corner_point"]["core_loss"] = cor_core_loss_data_arr[-5:].mean()
 
     return result_ctx
 
 def process_copper_loss(result_ctx):
-    corner_current = result_ctx["data"]["corner_point"]["current"]
+    corner_current = result_ctx["result"]["corner_point"]["current"]
     copper_data    = result_ctx["data"]["copper"]
 
     slot_distance          = copper_data["slot_distance"]
@@ -154,13 +155,31 @@ def process_copper_loss(result_ctx):
     total_coil_resis = single_coil_resis * correct_ratio / y_para
     resis_with_temp = total_coil_resis * (1 + 0.004 * (temp - 20))
 
-    result_ctx["data"]["corner_point"]["copper_loss"] = 3 * corner_current ** 2 * resis_with_temp
+    result_ctx["result"]["corner_point"]["copper_loss"] = 3 * corner_current ** 2 * resis_with_temp
+
     return result_ctx
 
+
+def process_efficiency(result_ctx):
+    corner_point = result_ctx["result"]["corner_point"]
+    torque = corner_point["avg_torque"]
+    speed = corner_point["speed"]
+    core_loss = corner_point["core_loss"] * corner_point["core_loss_factor"]
+    copper_loss = corner_point["copper_loss"]
+
+    output_power = torque * speed * 2 * math.pi / 60
+    efficiency = output_power / (output_power + core_loss + copper_loss)
+
+    result_ctx["result"]["corner_point"]["output_power"] = output_power
+    result_ctx["result"]["corner_point"]["efficiency"] = round(efficiency * 100, 2)
+
+    return result_ctx
+
+# import ipdb; ipdb.set_trace()
 # result_ctx = {
+#     "data_path": os.path.join(os.getcwd(), "tmp", "2020_06_21_1592743691"),
+#     "total_step": 50,
 #     "data": {
-#         "ele_ang_x_axis": [],
-#         "total_step": 50,
 #         "copper": {
 #             "temp": 30,
 #             "slot_distance": 21.2319,
@@ -173,6 +192,10 @@ def process_copper_loss(result_ctx):
 #             "copper_ele_resistivity": 1/58,
 #             "correct_ratio": 1.2,
 #         },
+#     },
+#     "result": {
+#         "model_picture_path": None,
+#         "ele_ang_x_axis": [],
 #         "corner_point": {
 #             "current": 297,
 #             "speed": 1769,
@@ -180,12 +203,12 @@ def process_copper_loss(result_ctx):
 #             "avg_torque": None,
 #             "torque_ripple": None,
 #             "line_voltage_rms": None,
-#             "core_loss_x1": None,
+#             "core_loss": None,
+#             "core_loss_factor": 1,
 #             "copper_loss": None,
 #             "efficiency": None,
 #             "output_power": None,
-#             "model_picture_path": None,
-#             "current density": None,
+#             "current_density": None,
 #         },
 #         "noload": {
 #             "ph_voltage_data": [],
@@ -197,9 +220,13 @@ def process_copper_loss(result_ctx):
 #         "max_speed": {
 #             "line_voltage_rms": None,
 #             "speed": 5000,
-#         }
+#         },
 #     }
 # }
 
-# process_copper_loss(result_ctx)
-# import ipdb; ipdb.set_trace()
+# prepare_x_axis_ele_ang(result_ctx) and \
+#     process_toruqe(result_ctx) and \
+#     process_voltage(result_ctx) and \
+#     process_core_loss(result_ctx) and \
+#     process_copper_loss(result_ctx) and \
+#     process_efficiency(result_ctx)
