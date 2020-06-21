@@ -150,6 +150,7 @@ def run_ansys(ctx):
         report_export(ctx) and \
         result_process(ctx)
 
+    print(ctx["response"])
     print('Simulation Completed')
 
     # ctx["response"] = ctx["params"]["motor_cal_params"]
