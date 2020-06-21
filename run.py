@@ -121,6 +121,11 @@ def run_ansys(ctx):
                 "line_voltage_rms": None,
                 "speed": None,
             },
+            "material_name": {
+                "stator": None,
+                "rotor": None,
+                "magnet": None
+            }
         }
     }
 

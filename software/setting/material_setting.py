@@ -55,7 +55,7 @@ def add_steel_setting(material_ctx):
                                 [
                                         "NAME:CoreLossMultiCurveData",
                                         "property_data:="	, "coreloss_multi_curve_data",
-                                        "coreloss_unit:="	, "w_per_cubic_meter",
+                                        "coreloss_unit:="	, "w_per_kg",
                                         [
                                                 "NAME:AllCurves",
                                                 [
@@ -994,7 +994,7 @@ def add_steel_setting(material_ctx):
                         "core_loss_kc:="	, "0.464858533103917",
                         "core_loss_ke:="	, "0",
                         "core_loss_kdc:="	, "0",
-                        "mass_density:="	, "0",
+                        "mass_density:="	, "7600",
                         "core_loss_equiv_cut_depth:=", "0"
                 ])
     return material_ctx

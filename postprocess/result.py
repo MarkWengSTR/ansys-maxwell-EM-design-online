@@ -54,6 +54,11 @@ def result_process(ctx):
                 "line_voltage_rms": None,
                 "speed": motor_cal_params["max_speed_rpm"],
             },
+            "material_name": {
+                "stator": ctx["params"]["motor_cal_params"]["material"]["stator"].replace("\"", "").replace("_steel", ""),
+                "rotor": ctx["params"]["motor_cal_params"]["material"]["rotor"].replace("\"", "").replace("_steel", ""),
+                "magnet": ctx["params"]["motor_cal_params"]["material"]["magnet"].replace("\"", "").replace("_mag", "")
+            }
         }
     }
 
@@ -221,6 +226,11 @@ def process_efficiency(result_ctx):
 #             "line_voltage_rms": None,
 #             "speed": 5000,
 #         },
+#         "material_name": {
+#             "stator": None,
+#             "rotor": None,
+#             "magnet": None
+#         }
 #     }
 # }
 
