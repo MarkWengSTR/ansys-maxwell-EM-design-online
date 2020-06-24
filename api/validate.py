@@ -19,7 +19,7 @@ def data_type_validate(ctx):
 
 def spec_keys_validate(ctx):
     if sorted(ctx["request"].keys()) == sorted(
-            ["stator_OD_limit", "max_power", "voltage_dc", "max_torque_nm", "max_speed_rpm", "export_path"]):
+            ["stator_OD_limit", "max_power", "voltage_dc", "max_torque_nm", "max_speed_rpm", "export_path", "pj_key"]):
         return True
     else:
         ctx["error"]["validate"]["msg"] = "not validate keys"

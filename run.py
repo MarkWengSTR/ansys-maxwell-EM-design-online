@@ -53,15 +53,16 @@ spec_params = {
     "voltage_dc":      48,
     "max_torque_nm":   27,
     "max_speed_rpm":   5000,
-    "export_path":     None
+    "export_path":     None,
+    "pj_key": None
 }
 
 
 def run_ansys(ctx):
     spec = {**spec_params, **ctx["request"]}
 
-    time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
-    project_name = str(datetime.date.today()).replace("-", "_") + "_" + time_stamp
+    # time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
+    project_name = str(datetime.date.today()).replace("-", "_") + "_" + spec_params["pj_key"]
 
     ctx = {
         **ctx,
