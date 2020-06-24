@@ -5,13 +5,11 @@ from api.validate import spec_present, data_type_validate, spec_keys_validate, a
 import requests
 ansys_processing_count = 0
 
+# debug
+# import ipdb; ipdb.set_trace()
 
 app = Flask(__name__)
 CORS(app)  # local development cors
-
-# @app.route('/post', methods=["POST"])
-# def test_respose():
-#     return jsonify({"msg": "good"})
 
 @app.route('/run_simu', methods=["POST"])
 def run_simulation():
@@ -25,7 +23,7 @@ def run_simulation():
             "limit": 4,
             "count": ansys_processing_count,
         },
-        "success_response": {"msg": "success run"},
+        "success_response": {"msg": "finish run"},
         "error": {
             "validate": {"msg": ""}
             }
@@ -41,9 +39,9 @@ def run_simulation():
 
     ansys_processing_count -= 1
 
-    response = request.post('http://localhost/postdata2.php', json=jsonify(ctx["response"]), headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+    response = requests.post(ctx["request"]["res_url"], json=ctx["response"], headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
 
-    print(response.code, response.json)
+    print(response.status_code, response.json())
 
     return jsonify(ctx["success_response"])
 

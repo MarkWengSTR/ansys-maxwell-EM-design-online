@@ -62,7 +62,8 @@ def run_ansys(ctx):
     spec = {**spec_params, **ctx["request"]}
 
     # time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
-    project_name = str(datetime.date.today()).replace("-", "_") + "_" + spec_params["pj_key"]
+    time_stamp = str(spec["pj_key"])
+    project_name = str(datetime.date.today()).replace("-", "_") + "_" + time_stamp
 
     ctx = {
         **ctx,
