@@ -38,7 +38,6 @@ def optimetrics_setting(ctx):
                                 [
                                         "NAME:Sweep Operations",
                                         "add:=", max_power,
-                                        "add:=", max_speed ,
                                 ],
                                 [
                                     "NAME:Goals"

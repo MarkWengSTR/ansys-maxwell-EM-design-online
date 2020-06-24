@@ -54,7 +54,8 @@ spec_params = {
     "max_torque_nm":   27,
     "max_speed_rpm":   5000,
     "export_path":     None,
-    "pj_key": None
+    "pj_key": None,
+    "res_url": None,
 }
 
 
@@ -98,6 +99,8 @@ def run_ansys(ctx):
         },
         "response": {
             "model_picture_path": None,
+            "stator_OD": None,
+            "motor_length": None,
             "ele_ang_x_axis": [],
             "corner_point": {
                 "current": None,

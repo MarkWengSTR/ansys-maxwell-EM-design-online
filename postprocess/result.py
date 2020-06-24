@@ -29,6 +29,8 @@ def result_process(ctx):
         "result": {
             "model_picture_path": ctx["data"]["model_picture_path"],
             "ele_ang_x_axis": [],
+            "stator_OD": motor_cal_params["calculation"]["est_stator_OD"],
+            "motor_length": motor_cal_params["length"],
             "corner_point": {
                 "current": motor_cal_params["max_current_rms"],
                 "speed": motor_cal_params["corner_speed_rpm"],
