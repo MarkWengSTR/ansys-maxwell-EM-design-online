@@ -31,6 +31,7 @@ def result_process(ctx):
             "ele_ang_x_axis": [],
             "stator_OD": motor_cal_params["calculation"]["est_stator_OD"],
             "motor_length": motor_cal_params["length"],
+            "coil_turn": motor_cal_params["calculation"]["coil_turns"],
             "corner_point": {
                 "current": motor_cal_params["max_current_rms"],
                 "speed": motor_cal_params["corner_speed_rpm"],
@@ -203,6 +204,9 @@ def process_efficiency(result_ctx):
 #     "result": {
 #         "model_picture_path": None,
 #         "ele_ang_x_axis": [],
+        # "stator_OD": 110,
+        # "motor_length": 50,
+        # "coil_turn": 2,
 #         "corner_point": {
 #             "current": 297,
 #             "speed": 1769,
