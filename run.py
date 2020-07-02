@@ -54,7 +54,7 @@ spec_params = {
     "max_torque_nm":   27,
     "max_speed_rpm":   5000,
     "export_path":     None,
-    "pj_key":          None,
+    "pj_key":          str(int(time.mktime(datetime.datetime.now().timetuple()))),
     "res_url":         None,
 }
 
@@ -62,7 +62,6 @@ spec_params = {
 def run_ansys(ctx):
     spec = {**spec_params, **ctx["request"]}
 
-    # time_stamp = str(int(time.mktime(datetime.datetime.now().timetuple())))
     time_stamp = str(spec["pj_key"])
     project_name = str(datetime.date.today()).replace("-", "_") + "_" + time_stamp
 
@@ -98,7 +97,7 @@ def run_ansys(ctx):
             "model_picture_path": None,
         },
         "response": {
-            "model_picture_path": None,
+            "pj_key": spec["pj_key"],
             "stator_OD": None,
             "motor_length": None,
             "coil_turn": None,
