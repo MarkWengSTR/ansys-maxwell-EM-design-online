@@ -39,9 +39,9 @@ def run_simulation():
 
     ansys_processing_count -= 1
 
-    response = requests.post(ctx["request"]["res_url"], json=ctx["response"], headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+    # response = requests.post(ctx["request"]["res_url"], json=ctx["response"], headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
 
-    print(response.status_code, response.json())
+    # print(response.status_code, response.json())
 
     return jsonify(ctx["success_response"])
 

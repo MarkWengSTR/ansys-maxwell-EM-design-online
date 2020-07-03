@@ -8,7 +8,7 @@ from params.ansys_params import stator_params, rotor_params, other_motor_params,
 from params.total_params_calculation import total_params_calculate
 
 # project
-from software.project.ansys_python_interface import find_or_initial_project, save_project
+from software.project.ansys_python_interface import find_or_initial_project, save_project, close_project
 
 # modeling
 from software.model.stator_model import stator_model
@@ -63,7 +63,7 @@ def run_ansys(ctx):
     spec = {**spec_params, **ctx["request"]}
 
     time_stamp = str(spec["pj_key"])
-    project_name = str(datetime.date.today()).replace("-", "_") + "_" + time_stamp
+    project_folder = str(datetime.date.today()).replace("-", "_") + "_" + time_stamp
 
     ctx = {
         **ctx,
@@ -84,16 +84,18 @@ def run_ansys(ctx):
             "oProject": None,
             "oDesign": None,
             "oEditor": None,
+            "oDesktop": None,
         },
         "data": {
-            "project_name": project_name,
+            "project_folder": project_folder,
+            "project_name": "project" + "_" + time_stamp,
             "coil_name_list": [],
             "mag_name_list": [],
             "opt_name": "OPT",
             "opt_oModule": None,
             "report_moudule": None,
             "time_stamp": time_stamp,
-            "export_path": spec["export_path"] or os.path.join(os.getcwd(), "tmp", project_name),
+            "export_path": spec["export_path"] or os.path.join(os.getcwd(), "tmp", project_folder),
             "model_picture_path": None,
         },
         "response": {
@@ -154,6 +156,8 @@ def run_ansys(ctx):
         report_setting(ctx) and \
         start_analysis(ctx) and \
         report_export(ctx) and \
+        save_project(ctx) and \
+        close_project(ctx) and \
         result_process(ctx)
 
     print(ctx["response"])
