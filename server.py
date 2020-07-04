@@ -22,7 +22,10 @@ class BackgroundProcess(Thread):
 
         response = requests.post(ctx["request"]["res_url"], json=ctx["response"], headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
 
-        print(response.status_code, response.json())
+        global ansys_processing_count
+        ansys_processing_count -= 1
+
+        print(response.status_code)
 
 @app.route('/run_simu', methods=["POST"])
 def run_simulation():
@@ -50,8 +53,6 @@ def run_simulation():
         thread_a.start()
     else:
         return jsonify(ctx["error"]["validate"])
-
-    ansys_processing_count -= 1
 
     return jsonify(ctx["start_run_response"])
 
