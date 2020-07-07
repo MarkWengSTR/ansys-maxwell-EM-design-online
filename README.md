@@ -35,5 +35,7 @@ all setting are in params/
 ## Execute Guide
 1. active virtual env
  - ./venv/Scripts/activate
-2. execute run.py
- - python run.py
+2. execute
+ - just run analysis(params set at spec_params in run.py) - python run.py
+ - run flask api server and call ansys run and return result as response (POST method, json data sample in example/, url = http://localhost:5000/run_simu) - python server.py
+ - run flask api server, call but run ansys asyc in backgroud and return result use request to another url (POST method, json data sample in example/, url = http://localhost:5000/run_simu) - python server_run_back.py
