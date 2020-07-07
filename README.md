@@ -6,12 +6,9 @@ Using python control ansys maxwell software to draw a surface PM motor
 ## Requirements
 1. Windows 7 or above
 2. Legal Ansys Maxwell Electromagnetic Suite
-3. Required Ansys material
- - 35CS250_20190702.amat
- - ZH_N44SH_20deg_20190702.amat
-4. Python 3
+3. Python 3
  - python 3.7.6
-5. Python library
+4. Python library
  - pywin32==227
  - ramda==0.5.5
  - six==1.13.0
