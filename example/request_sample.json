@@ -1,0 +1,10 @@
+{
+    "stator_OD_limit": 110,
+    "max_power": 3000,
+    "voltage_dc": 48,
+    "max_torque_nm": 10,
+    "max_speed_rpm": 5000,
+    "export_path": null,
+    "pj_key": 1,
+    "res_url":null
+}
