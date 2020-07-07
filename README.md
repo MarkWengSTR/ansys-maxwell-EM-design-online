@@ -12,11 +12,16 @@ Using python control ansys maxwell software to draw a surface PM motor
 4. Python 3
  - python 3.7.6
 5. Python library
- - pywin32 == 227
- - ramda == 0.5.5
- - six == 1.13.0
- - functional-pipeline == 0.3.1
- - ipdb == 0.12.3
+ - pywin32==227
+ - ramda==0.5.5
+ - six==1.13.0
+ - functional-pipeline==0.3.1
+ - ipdb==0.12.3
+ - Flask==1.1.2
+ - Flask-Cors==3.0.8
+ - pandas==1.0.1
+ - numpy==1.18.1
+ - requests==2.24.0
 ## Environment Install Guide (Verified)
 1. Install Python 3.7.6
 2. (optional) Install virutal env
