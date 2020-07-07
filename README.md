@@ -1,7 +1,9 @@
 # Ansys Maxwell Automation Script
 
 ## Goal
-Using python control ansys maxwell software to draw a surface PM motor
+Setup a python api server, accept motor spec(stator Outer Diameter, DC bus voltage, max toruqe, max speed), 
+auto design, draw and run ansys analysis,
+finally response result data(BEMF, cogging torque, max torque, torque ripple, induce voltage, efficiency)
 
 ## Requirements
 1. Windows 7 or above
