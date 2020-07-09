@@ -1,9 +1,10 @@
-# Ansys Maxwell Automation Script
+# Electrical Machines Design Automation by Ansys Maxwell Script
 
 ## Goal
 Setup a python api server, accept motor spec(stator Outer Diameter, DC bus voltage, max toruqe, max speed), 
 auto design, draw and run ansys analysis,
 finally response result data(BEMF, cogging torque, max torque, torque ripple, induce voltage, efficiency)
+(Now just 10p12s Surface PM design, It still working on...)
 
 ## Requirements
 1. Windows 7 or above
