@@ -1,5 +1,8 @@
 # Electrical Machines Design Automation by Ansys Maxwell Script
 
+YouTube Vedio
+https://youtu.be/uStT2k3V6x0
+
 ## Goal
 Setup a python api server, accept motor spec(stator Outer Diameter, DC bus voltage, max toruqe, max speed), 
 auto design, draw and run ansys analysis,
