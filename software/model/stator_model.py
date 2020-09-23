@@ -3,7 +3,6 @@
 def stator_model(ctx):
     print('Draw Stator model')
 
-    stator_params = ctx["params"]["stator_params"]
     model_name = ctx["params"]["name_params"]["stator"]
 
     ctx["ansys_object"]["oEditor"].CreateUserDefinedPart(
@@ -18,12 +17,12 @@ def stator_model(ctx):
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaGap",
-                    "Value:="		, stator_params["Dsi"]
+                    "Value:="		, "Dsi"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaYoke",
-                    "Value:="		, stator_params["Dso"]
+                    "Value:="		, "Dso"
                 ],
                 [
                     "NAME:Pair",
@@ -38,7 +37,7 @@ def stator_model(ctx):
                 [
                     "NAME:Pair",
                     "Name:="		, "Slots",
-                    "Value:="		, stator_params["slot"]
+                    "Value:="		, "slot"
                 ],
                 [
                     "NAME:Pair",
@@ -48,7 +47,7 @@ def stator_model(ctx):
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs0",
-                    "Value:="		, stator_params["Hs0"]
+                    "Value:="		, "Hs0"
                 ],
                 [
                     "NAME:Pair",
@@ -58,32 +57,32 @@ def stator_model(ctx):
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs1",
-                    "Value:="		, stator_params["Hs1"]
+                    "Value:="		, "Hs1"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Hs2",
-                    "Value:="		, stator_params["Hs2"]
+                    "Value:="		, "Hs2"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs0",
-                    "Value:="		, stator_params["Bs0"]
+                    "Value:="		, "Bs0"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs1",
-                    "Value:="		, stator_params["Bs1"]
+                    "Value:="		, "Bs1"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Bs2",
-                    "Value:="		, stator_params["Bs2"]
+                    "Value:="		, "Bs2"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Rs",
-                    "Value:="		, stator_params["Rs"]
+                    "Value:="		, "Rs"
                 ],
                 [
                     "NAME:Pair",

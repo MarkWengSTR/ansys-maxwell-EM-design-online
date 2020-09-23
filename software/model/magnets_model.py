@@ -4,7 +4,6 @@
 def magnets_model(ctx):
     print('Draw magnet model and set vector')
 
-    rotor_params = ctx["params"]["rotor_params"]
     rotor_pole = int(rotor_params["pole"])
     oEditor = ctx["ansys_object"]["oEditor"]
 
@@ -20,12 +19,12 @@ def magnets_model(ctx):
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaGap",
-                    "Value:="		, rotor_params["Dro"]
+                    "Value:="		, "Dro"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "DiaYoke",
-                    "Value:="		, rotor_params["Dri"]
+                    "Value:="		, "Dri"
                 ],
                 [
                     "NAME:Pair",
@@ -35,27 +34,27 @@ def magnets_model(ctx):
                 [
                     "NAME:Pair",
                     "Name:="		, "Poles",
-                    "Value:="		, rotor_params["pole"]
+                    "Value:="		, "pole"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "PoleType",
-                    "Value:="		, rotor_params["rotor_type"]
+                    "Value:="		, "rotor_type"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Embrace",
-                    "Value:="		, rotor_params["mag_emb"]
+                    "Value:="		, "mag_emb"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "ThickMag",
-                    "Value:="		, rotor_params["mag_thick"]
+                    "Value:="		, "mag_thick"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "WidthMag",
-                    "Value:="		, rotor_params["mag_width"]
+                    "Value:="		, "mag_width"
                 ],
                 [
                     "NAME:Pair",
@@ -65,12 +64,12 @@ def magnets_model(ctx):
                 [
                     "NAME:Pair",
                     "Name:="		, "Bridge",
-                    "Value:="		, rotor_params["rotor_bridge"]
+                    "Value:="		, "rotor_bridge"
                 ],
                 [
                     "NAME:Pair",
                     "Name:="		, "Rib",
-                    "Value:="		, rotor_params["rotor_rib"]
+                    "Value:="		, "rotor_rib"
                 ],
                 [
                     "NAME:Pair",
