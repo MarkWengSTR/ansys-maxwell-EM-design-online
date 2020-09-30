@@ -1,35 +1,37 @@
-import os
 import datetime
+import os
 import time
 
+from params.ansys_params import (analysis_params, band_params,
+                                 excitation_params, name_params,
+                                 optiparametric_params, other_motor_params,
+                                 report_list, rotor_params, stator_params)
 # params
 from params.motor_params import motor_cal_params
-from params.ansys_params import stator_params, rotor_params, other_motor_params, excitation_params, band_params, name_params, analysis_params, optiparametric_params, report_list
 from params.total_params_calculation import total_params_calculate
-
-# project
-from software.project.ansys_python_interface import find_or_initial_project, save_project, close_project
-
-# modeling
-from software.model.stator_model import stator_model
-from software.model.rotor_model import rotor_model
-from software.model.band_model import band_model
-from software.model.magnets_model import magnets_model
-from software.model.coils_model import coils_model
-
-# setting
-from software.setting.params_setting import params_setting
-from software.setting.current_excitation_setting import current_excitation_setting
-from software.setting.model_setting import model_setting
-from software.setting.mesh_setting import mesh_setting
-from software.setting.material_setting import material_setting
-from software.setting.analysis_setting import analysis_setting, start_analysis
-from software.setting.optimetrics_setting import optimetrics_setting
-from software.setting.report_setting import report_setting, report_export
-from software.setting.export_plot_setting import export_model_picture
-
 # postprocess
 from postprocess.result import result_process
+from software.model.band_model import band_model
+from software.model.coils_model import coils_model
+from software.model.magnets_model import magnets_model
+from software.model.rotor_model import rotor_model
+# modeling
+from software.model.stator_model import stator_model
+# project
+from software.project.ansys_python_interface import (close_project,
+                                                     find_or_initial_project,
+                                                     save_project)
+from software.setting.analysis_setting import analysis_setting, start_analysis
+from software.setting.current_excitation_setting import \
+    current_excitation_setting
+from software.setting.export_plot_setting import export_model_picture
+from software.setting.material_setting import material_setting
+from software.setting.mesh_setting import mesh_setting
+from software.setting.model_setting import model_setting
+from software.setting.optimetrics_setting import optimetrics_setting
+# setting
+from software.setting.params_setting import params_setting
+from software.setting.report_setting import report_export, report_setting
 
 # debug
 # import ipdb; ipdb.set_trace()
@@ -63,7 +65,8 @@ def run_ansys(ctx):
     spec = {**spec_params, **ctx["request"]}
 
     time_stamp = str(spec["pj_key"])
-    project_folder = str(datetime.date.today()).replace("-", "_") + "_" + time_stamp
+    project_folder = str(datetime.date.today()).replace(
+        "-", "_") + "_" + time_stamp
 
     ctx = {
         **ctx,
