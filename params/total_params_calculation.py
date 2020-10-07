@@ -1,5 +1,6 @@
 from params.ktke_calculation import mech_stucture_cal
 
+
 def stator_params_assign(total_cal_params):
     stator_params = total_cal_params["stator_params"]
     cal_params = total_cal_params["motor_cal_params"]
@@ -38,10 +39,12 @@ def other_motor_params_assign(total_cal_params):
     other_motor_params = total_cal_params["other_motor_params"]
     cal_params = total_cal_params["motor_cal_params"]
 
-    other_motor_params["speed_rpm"] = str(cal_params["corner_speed_rpm"]) + "rpm"
+    other_motor_params["speed_rpm"] = str(
+        cal_params["corner_speed_rpm"]) + "rpm"
     other_motor_params["length"] = str(cal_params["length"]) + "mm"
 
     return total_cal_params
+
 
 def excitation_params_assign(total_cal_params):
     excitation_params = total_cal_params["excitation_params"]
@@ -52,12 +55,15 @@ def excitation_params_assign(total_cal_params):
 
     return total_cal_params
 
+
 def optiparametric_params_assign(total_cal_params):
     optiparametric_params = total_cal_params["optiparametric_params"]
     cal_params = total_cal_params["motor_cal_params"]
 
-    optiparametric_params["max_power"] = [str(cal_params["max_current_rms"]) + "A", str(cal_params["corner_speed_rpm"]) + "rpm"]
-    optiparametric_params["max_speed"] = ["0A", str(cal_params["max_speed_rpm"]) + "rpm"]
+    optiparametric_params["max_power"] = [str(
+        cal_params["max_current_rms"]) + "A", str(cal_params["corner_speed_rpm"]) + "rpm"]
+    optiparametric_params["max_speed"] = [
+        "0A", str(cal_params["max_speed_rpm"]) + "rpm"]
 
     return total_cal_params
 

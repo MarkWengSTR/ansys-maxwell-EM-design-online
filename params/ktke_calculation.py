@@ -1,25 +1,6 @@
 import math
 
 
-def ktke_calculation(total_cal_params):
-    spec_params = total_cal_params["spec_params"]
-
-    max_power, voltage_dc, voltage_buffer, max_torque_nm, max_speed_rpm = \
-        spec_params["max_power"], spec_params["voltage_dc"], total_cal_params["motor_cal_params"][
-            "estimate"]["voltage_buffer"], spec_params["max_torque_nm"], spec_params["max_speed_rpm"]
-
-    total_cal_params["motor_cal_params"]["ke"] = round(
-        (voltage_dc * voltage_buffer / 3**0.5) / ((max_speed_rpm * 2 * math.pi) / 60), 4)
-
-    total_cal_params["motor_cal_params"]["kt"] = round(
-        total_cal_params["motor_cal_params"]["ke"] * total_cal_params["motor_cal_params"]["estimate"]["kt_ke_ratio"], 4)
-
-    total_cal_params["motor_cal_params"]["max_current_rms"] = round(
-        (2**0.5 / 3) * (max_torque_nm / total_cal_params["motor_cal_params"]["kt"]))
-
-    return total_cal_params
-
-
 def assign_spec_value(total_cal_params):
     spec_params = total_cal_params["spec_params"]
     cal_params = total_cal_params["motor_cal_params"]
@@ -34,6 +15,27 @@ def assign_spec_value(total_cal_params):
     return total_cal_params
 
 
+def ktke_calculation(total_cal_params):
+    spec_params = total_cal_params["spec_params"]
+    cal_params = total_cal_params["motor_cal_params"]
+
+    voltage_dc, voltage_buffer, max_torque_nm, max_speed_rpm = \
+        spec_params["voltage_dc"], cal_params[
+            "estimate"]["voltage_buffer"], spec_params["max_torque_nm"], spec_params["max_speed_rpm"]
+
+    # calculate
+    cal_params["ke"] = round(
+        (voltage_dc * voltage_buffer / 3**0.5) / ((max_speed_rpm * 2 * math.pi) / 60), 4)
+
+    cal_params["kt"] = round(
+        cal_params["ke"] * cal_params["estimate"]["kt_ke_ratio"], 4)
+
+    cal_params["max_current_rms"] = round(
+        (2**0.5 / 3) * (max_torque_nm / cal_params["kt"]))
+
+    return total_cal_params
+
+
 def expend_NBLR(total_cal_params):
     cal_params = total_cal_params["motor_cal_params"]
 
@@ -44,12 +46,12 @@ def expend_NBLR(total_cal_params):
     rotor_OD_ratio = cal_params["estimate"]["rotor_OD_ratio"]
     torque = cal_params["max_torque_nm"]
     torque_density = cal_params["estimate"]["torque_density"]
-
-    length = math.ceil(((torque / torque_density) * 10 ** 6)
-                       * 4 / ((stator_OD_limit * 1000) ** 2 * math.pi)) / 1000
-
     w_factor_10p12s = cal_params["w_factor_10p12s"]
     y_para = cal_params["coil"]["y_para"]
+
+    # calculate
+    length = math.ceil(((torque / torque_density) * 10 ** 6)
+                       * 4 / ((stator_OD_limit * 1000) ** 2 * math.pi)) / 1000
 
     coil_turns = math.ceil(
         ke/(2 * (slot / 3 / y_para) * bg * length * (stator_OD_limit * rotor_OD_ratio / 2) * w_factor_10p12s))
@@ -76,6 +78,7 @@ def expend_stator_teeth_york(total_cal_params):
     shoes_height_front = cal_params["stator"]["shoes_height_front"]
     shoes_height_back = cal_params["stator"]["shoes_height_back"]
 
+    # calculate
     mag_angle = mag_emb * (360 / pole)
     teeth_angle = teeth_mag_ang_ratio * mag_angle
 
@@ -105,6 +108,7 @@ def expend_stator_slot(total_cal_params):
     shoes_height_front = cal_params["stator"]["shoes_height_front"]
     shoes_height_back = cal_params["stator"]["shoes_height_back"]
 
+    # calculate
     para_conductor = math.ceil(
         total_cal_params["motor_cal_params"]["max_current_rms"] /
         (cal_params["estimate"]["max_J"] * (conductor_OD ** 2 * math.pi / 4) * cal_params["coil"]["y_para"]))
@@ -152,6 +156,7 @@ def expend_stator_slot(total_cal_params):
 def expend_magnet(total_cal_params):
     cal_params = total_cal_params["motor_cal_params"]
 
+    # calculate
     cal_params["calculation"]["mag_thick"] = cal_params["estimate"]["mag_pc"] * \
         cal_params["rotor"]["mag_emb"] * cal_params["airgap"]
 
@@ -159,8 +164,8 @@ def expend_magnet(total_cal_params):
 
 
 def mech_stucture_cal(total_cal_params):
-    ktke_calculation(total_cal_params) and \
-        assign_spec_value(total_cal_params) and \
+    assign_spec_value(total_cal_params) and \
+        ktke_calculation(total_cal_params) and \
         expend_NBLR(total_cal_params) and \
         expend_stator_teeth_york(total_cal_params) and \
         expend_stator_slot(total_cal_params) and \
