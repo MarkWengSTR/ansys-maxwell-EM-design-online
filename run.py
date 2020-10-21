@@ -11,11 +11,11 @@ from params.motor_params import motor_cal_params
 from params.total_params_calculation import total_params_calculate
 # postprocess
 from postprocess.result import result_process
+# modeling
 from software.model.band_model import band_model
 from software.model.coils_model import coils_model
 from software.model.magnets_model import magnets_model
 from software.model.rotor_model import rotor_model
-# modeling
 from software.model.stator_model import stator_model
 # project
 from software.project.ansys_python_interface import (close_project,
