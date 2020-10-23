@@ -1,12 +1,19 @@
 # magmets
 
+def prepare_mag_name_list(mag_ctx):
+    # magnet_number is 0..rotor_pole-1
+    # magnet name: magnet, magner_1, magnet_2 ...
 
-def magnets_model(ctx):
-    print('Draw magnet model and set vector')
+    for pole_num in list(range(mag_ctx["rotor_pole"])):
+        number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
 
-    rotor_pole = int(ctx["params"]["rotor_params"]["pole"])
-    oEditor = ctx["ansys_object"]["oEditor"]
+        mag_ctx["mag_name_list"] += ["magnet" + number_in_name]
 
+    return mag_ctx
+
+
+def create_ini_magnet(mag_ctx):
+    oEditor = mag_ctx["oEditor"]
     oEditor.CreateUserDefinedPart(
         [
             "NAME:UserDefinedPrimitiveParameters",
@@ -85,38 +92,49 @@ def magnets_model(ctx):
         ],
         [
             "NAME:Attributes",
-            "Name:="		, "magnet",
+            "Name:="		, mag_ctx["ini_mag_name"],
             "Flags:="		, "",
             "Color:="		, "(143 175 143)",
             "Transparency:="	, 0,
             "PartCoordinateSystem:=", "Global",
             "UDMId:="		, "",
-            "MaterialValue:="	, ctx["params"]["motor_cal_params"]["material"]["magnet"],
+            "MaterialValue:="	, mag_ctx["mag_material"],
             "SolveInside:="		, True
         ])
 
-    def muti_mag():
-        oEditor.DuplicateAroundAxis(
-            [
-                "NAME:Selections",
-                "Selections:="		, "magnet",
-                "NewPartsModelFlag:="	, "Model"
-            ],
-            [
-                "NAME:DuplicateAroundAxisParameters",
-                "CreateNewObjects:="	, True,
-                "WhichAxis:="		, "Z",
-                "AngleStr:="		, str(360/rotor_pole) + "deg",
-                "NumClones:="		, str(rotor_pole)
-            ],
-            [
-                "NAME:Options",
-                "DuplicateAssignments:=", False
-            ])
+    return mag_ctx
 
-        return True
 
-    def vector_set(pole_num, mag_arrange_angle, direction):
+def muti_mag(mag_ctx):
+    oEditor = mag_ctx["oEditor"]
+    oEditor.DuplicateAroundAxis(
+        [
+            "NAME:Selections",
+            "Selections:="		, mag_ctx["ini_mag_name"],
+            "NewPartsModelFlag:="	, "Model"
+        ],
+        [
+            "NAME:DuplicateAroundAxisParameters",
+            "CreateNewObjects:="	, True,
+            "WhichAxis:="		, "Z",
+            "AngleStr:="		, str(360/mag_ctx["rotor_pole"]) + "deg",
+            "NumClones:="		, str(mag_ctx["rotor_pole"])
+        ],
+        [
+            "NAME:Options",
+            "DuplicateAssignments:=", False
+        ])
+
+    return mag_ctx
+
+
+def create_vector(mag_ctx):
+    oEditor = mag_ctx["oEditor"]
+    pole_no_list = mag_ctx["pole_no_list"]
+    angle_list = mag_ctx["angle_list"]
+    direction_list = mag_ctx["direction_list"]
+
+    for pole_num, mag_arrange_angle, direction in zip(pole_no_list, angle_list, direction_list):
         psi_direction = {
             "N": "0deg",
             "S": "180deg"
@@ -206,18 +224,22 @@ def magnets_model(ctx):
                 "RegionDepCSOk:="	, False
             ])
 
-    def set_vector_to_mag(pole_num):
-        # magnet number: magnet, magner_1, magnet_2 ...
-        number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
+    return mag_ctx
 
+
+def set_vector_to_mag(mag_ctx):
+    oEditor = mag_ctx["oEditor"]
+    pole_no_list = mag_ctx["pole_no_list"]
+    mag_name_list = mag_ctx["mag_name_list"]
+
+    for pole_num, mag_name in zip(pole_no_list, mag_name_list):
         oEditor.ChangeProperty(
             [
                 "NAME:AllTabs",
                 [
                     "NAME:Geometry3DAttributeTab",
                     [
-                        "NAME:PropServers",
-                        "magnet" + number_in_name
+                        "NAME:PropServers", mag_name
                     ],
                     [
                         "NAME:ChangedProps",
@@ -229,9 +251,15 @@ def magnets_model(ctx):
                 ]
             ])
 
-    def set_mag_color(pole_num, direction):
-        number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
+    return mag_ctx
 
+
+def set_mag_color(mag_ctx):
+    oEditor = mag_ctx["oEditor"]
+    direction_list = mag_ctx["direction_list"]
+    mag_name_list = mag_ctx["mag_name_list"]
+
+    for direction, mag_name in zip(direction_list, mag_name_list):
         coil_color_dir = {
             "N":  ["NAME:Color", "R:=", 255, "G:=", 0, "B:=", 0],
             "S":  ["NAME:Color", "R:=", 0, "G:=", 0, "B:=", 255],
@@ -243,8 +271,7 @@ def magnets_model(ctx):
                 [
                     "NAME:Geometry3DAttributeTab",
                     [
-                        "NAME:PropServers",
-                        "magnet" + number_in_name
+                        "NAME:PropServers", mag_name
                     ],
                     [
                         "NAME:ChangedProps",
@@ -253,36 +280,41 @@ def magnets_model(ctx):
                 ]
             ])
 
-    def set_color_vector_to_each_magnet():
-        # magnet_number is 0..rotor_pole-1
-        ini_angle = (360 / rotor_pole / 2)
-        angle = (360 / rotor_pole)
+    return mag_ctx
 
-        pole_no_list = list(range(rotor_pole))
-        angle_list = list(map(
-            lambda p_no: (ini_angle + p_no*angle),
-            pole_no_list))
-        direction_list = list(map(
-            lambda p_no: ("S" if (p_no % 2 == 1) else "N"),
-            pole_no_list))
 
-        list(map(vector_set, pole_no_list, angle_list, direction_list))
-        list(map(set_vector_to_mag, pole_no_list))
-        list(map(set_mag_color, pole_no_list, direction_list))
+def magnets_model(ctx):
+    print('Draw magnet model and set vector')
 
-        return True
+    rotor_pole = int(ctx["params"]["rotor_params"]["pole"])
+    ini_angle = (360 / rotor_pole / 2)
+    angle = (360 / rotor_pole)
+    pole_no_list = list(range(rotor_pole))
+    angle_list = list(map(
+        lambda p_no: (ini_angle + p_no*angle),
+        pole_no_list))
+    direction_list = list(map(
+        lambda p_no: ("S" if (p_no % 2 == 1) else "N"),
+        pole_no_list))
 
-    def prepare_mag_name_list(ctx):
-        for pole_num in list(range(rotor_pole)):
-            number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
+    mag_ctx = {
+        "oEditor": ctx["ansys_object"]["oEditor"],
+        "rotor_pole": rotor_pole,
+        "ini_mag_name": "magnet",
+        "mag_material": ctx["params"]["motor_cal_params"]["material"]["magnet"],
+        "pole_no_list": pole_no_list,
+        "angle_list": angle_list,
+        "direction_list": direction_list,
+        "mag_name_list": [],
+    }
 
-            ctx["data"]["mag_name_list"] += ["magnet" + number_in_name]
+    prepare_mag_name_list(mag_ctx) and \
+        create_ini_magnet(mag_ctx) and \
+        muti_mag(mag_ctx) and \
+        create_vector(mag_ctx) and \
+        set_vector_to_mag(mag_ctx) and \
+        set_mag_color(mag_ctx)
 
-        return ctx
-
-    # exec function
-    muti_mag() and \
-        set_color_vector_to_each_magnet() and \
-        prepare_mag_name_list(ctx)
+    ctx["data"]["mag_name_list"] = mag_ctx["mag_name_list"]
 
     return ctx
