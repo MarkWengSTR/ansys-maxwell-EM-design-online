@@ -1,6 +1,8 @@
 def iron_loss_setup(band_model_ctx):
     band_model_ctx["oBoundaryModule"].SetCoreLoss(["stator", "rotor"], False)
 
+    return band_model_ctx
+
 
 def draw_outer_band(band_model_ctx):
     # raduis must be named same as params setting
@@ -29,6 +31,8 @@ def draw_outer_band(band_model_ctx):
             "SolveInside:="	, True
         ])
 
+    return band_model_ctx
+
 
 def outer_band_setting(band_model_ctx):
     oBoundaryModule = band_model_ctx["oBoundaryModule"]
@@ -46,6 +50,8 @@ def outer_band_setting(band_model_ctx):
             "Value:="		, "0",
             "CoordinateSystem:="	, ""
         ])
+
+    return band_model_ctx
 
 
 def draw_rota_band(band_model_ctx):
@@ -77,6 +83,8 @@ def draw_rota_band(band_model_ctx):
             "SolveInside:="	, True
         ])
 
+    return band_model_ctx
+
 
 def rota_band_setting(band_model_ctx):
     oModelModule = band_model_ctx["oModelModule"]
@@ -96,6 +104,8 @@ def rota_band_setting(band_model_ctx):
             "Angular Velocity:="	, "speed_rpm",
             "Objects:="		, [rotaband]
         ])
+
+    return band_model_ctx
 
 
 def band_model(ctx):
