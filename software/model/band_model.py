@@ -32,12 +32,17 @@ def draw_outer_band(band_model_ctx):
 
 def outer_band_setting(band_model_ctx):
     oBoundaryModule = band_model_ctx["oBoundaryModule"]
-    outerband_edge_id_list = band_model_ctx["outerband_edge_id_list"]
+    oEditor = band_model_ctx["oEditor"]
+    outerband = band_model_ctx["outerband"]
+
+    edge_list = oEditor.GetEdgeIDsFromObject(outerband)
+
+    outerband_edge_id_list = (int(edge_list[0]))
 
     oBoundaryModule.AssignVectorPotential(
         [
             "NAME:VectorPotential1",
-            "Edges:="		, outerband_edge_id_list,
+            "Edges:="		, [outerband_edge_id_list],
             "Value:="		, "0",
             "CoordinateSystem:="	, ""
         ])
@@ -94,18 +99,13 @@ def rota_band_setting(band_model_ctx):
 
 
 def band_model(ctx):
-    edge_list = ctx["ansys_object"]["oEditor"].GetEdgeIDsFromObject(
-        ctx["params"]["name_params"]["band"]["outerband"])
-
     band_model_ctx = {
         "oEditor":         ctx["ansys_object"]["oEditor"],
         "oDesign":         ctx["ansys_object"]["oDesign"],
-        "oBoundaryModule": ctx["ansys_object"]["oEditor"].GetModule("BoundarySetup"),
+        "oBoundaryModule": ctx["ansys_object"]["oDesign"].GetModule("BoundarySetup"),
         "oModelModule":    ctx["ansys_object"]["oDesign"].GetModule("ModelSetup"),
         "rotaband":        ctx["params"]["name_params"]["band"]["rotaband"],
-        "outerband":       ctx["params"]["name_params"]["band"]["outerband"],
-        "outerband_edge_id_list": (int(edge_list[0]))
-    }
+        "outerband":       ctx["params"]["name_params"]["band"]["outerband"]}
 
     print('Draw and set band model and ironloss')
 

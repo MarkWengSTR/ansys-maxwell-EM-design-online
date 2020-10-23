@@ -4,7 +4,7 @@
 def magnets_model(ctx):
     print('Draw magnet model and set vector')
 
-    rotor_pole = int(rotor_params["pole"])
+    rotor_pole = int(ctx["params"]["rotor_params"]["pole"])
     oEditor = ctx["ansys_object"]["oEditor"]
 
     oEditor.CreateUserDefinedPart(
@@ -253,15 +253,6 @@ def magnets_model(ctx):
                 ]
             ])
 
-    def prepare_mag_name_list(ctx):
-        for pole_num in list(range(rotor_pole)):
-            number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
-
-            ctx["data"]["mag_name_list"] += ["magnet" + number_in_name]
-
-        return ctx
-
-
     def set_color_vector_to_each_magnet():
         # magnet_number is 0..rotor_pole-1
         ini_angle = (360 / rotor_pole / 2)
@@ -281,6 +272,13 @@ def magnets_model(ctx):
 
         return True
 
+    def prepare_mag_name_list(ctx):
+        for pole_num in list(range(rotor_pole)):
+            number_in_name = "" if pole_num == 0 else "_" + str(pole_num)
+
+            ctx["data"]["mag_name_list"] += ["magnet" + number_in_name]
+
+        return ctx
 
     # exec function
     muti_mag() and \
