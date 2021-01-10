@@ -40,8 +40,8 @@ def expend_NBLR(total_cal_params):
     cal_params = total_cal_params["motor_cal_params"]
 
     ke = total_cal_params["motor_cal_params"]["ke"]
-    stator_OD_limit, slot = cal_params["stator"]["OD_limit"] / \
-        1000,        cal_params["stator"]["slot"]
+    stator_OD_limit, slot = cal_params["stator"]["OD_limit"] / 1000,\
+        cal_params["stator"]["slot"]
     bg = cal_params["estimate"]["bg"]
     rotor_OD_ratio = cal_params["estimate"]["rotor_OD_ratio"]
     torque = cal_params["max_torque_nm"]
