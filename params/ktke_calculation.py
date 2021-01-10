@@ -124,7 +124,7 @@ def expend_stator_slot(total_cal_params):
 
     slot_height = york_width  # for slot height & york 1:1
 
-    while slot_height < (max_slot_height * 2):
+    while slot_height < max_slot_height:
         slot_width_front = (((rotor_OD + airgap*2) + (shoes_height_front +
                                                       shoes_height_back)*2) * math.pi - slot * teeth_width) / slot
 
@@ -171,7 +171,15 @@ def mech_stucture_cal(total_cal_params):
         expend_stator_slot(total_cal_params) and \
         expend_magnet(total_cal_params)
 
-    return total_cal_params
+    cal_params = total_cal_params["motor_cal_params"]
+
+    if cal_params["coil"]["slot_fill_factor"] * 1.01 <= cal_params["calculation"]["real_slot_fill_factor"]:
+        print(cal_params)
+        raise ValueError(
+            "calculated slot fill factor is {0}, too large".format
+            (cal_params["calculation"]["real_slot_fill_factor"]))
+    else:
+        return total_cal_params
 
 # import ipdb; ipdb.set_trace()
 # ktke_validate(total_cal_params)
