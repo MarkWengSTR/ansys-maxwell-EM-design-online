@@ -1,6 +1,6 @@
 import setuptools
 
-python_requires = [
+install_requires = [
     "setuptools",
     "pywin32==227",
     "ramda==0.5.5",
@@ -24,8 +24,9 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: Apache Software License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: Windows > 7",
     ],
-    python_requires=python_requires,
+    install_requires=install_requires,
+    python_requires=">=3.6",
 )
