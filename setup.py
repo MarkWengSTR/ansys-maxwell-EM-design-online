@@ -14,12 +14,17 @@ install_requires = [
     "requests==2.24.0",
 ]
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setuptools.setup(
     name="an_em_design",
     version="0.1a",
     author="Mark Weng",
     author_email="bskin0330@gmail.com",
     description="Electrical Machines Design Automation by Ansys Maxwell Script",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     url="https://github.com/MarkWengSTR/ansys-maxwell-EM-design-online",
     packages=setuptools.find_packages(),
     classifiers=[
