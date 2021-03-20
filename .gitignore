@@ -1,3 +1,6 @@
 *pycache*
 *tool-versions
 tmp*
+/build
+/dist
+*egg*

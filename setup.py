@@ -18,7 +18,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="an_em_design",
+    name="anmotordesign",
     version="0.1a",
     author="Mark Weng",
     author_email="bskin0330@gmail.com",
@@ -30,7 +30,7 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: Windows > 7",
+        "Operating System :: OS Independent",
     ],
     install_requires=install_requires,
     python_requires=">=3.6",
