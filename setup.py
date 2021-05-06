@@ -8,7 +8,7 @@ install_requires = [
     "functional-pipeline==0.3.1",
     "ipdb==0.12.3",
     "Flask==1.1.2",
-    "Flask-Cors==3.0.8",
+    "Flask-Cors==3.0.9",
     "pandas==1.0.1",
     "numpy==1.18.1",
     "requests==2.24.0",
