@@ -1,6 +1,6 @@
 # python & ansoft connection
 
-import os
+from pathlib import Path
 
 import pythoncom
 from win32com import client
@@ -41,14 +41,13 @@ def find_or_initial_project(ctx):
 
 
 def save_project(ctx):
-    export_path = ctx["data"]["export_path"]
+    export_path = Path(ctx["data"]["export_path"])
     project_name = ctx["data"]["project_name"]
 
-    if not os.path.isdir(export_path):
-        os.mkdir(export_path)
+    export_path.mkdir(parents=True, exist_ok=True)
 
     ctx["ansys_object"]["oProject"].SaveAs(
-        export_path + "\\" + project_name + ".aedt", True)
+        str(export_path / f"{project_name}.aedt"), True)
 
     return ctx
 
