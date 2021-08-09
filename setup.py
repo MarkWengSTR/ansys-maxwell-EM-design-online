@@ -2,7 +2,7 @@ import setuptools
 
 install_requires = [
     "setuptools",
-    "pywin32==227",
+    "pywin32==301",
     "ramda==0.5.5",
     "six==1.13.0",
     "functional-pipeline==0.3.1",
