@@ -10,7 +10,7 @@ install_requires = [
     "Flask==1.1.2",
     "Flask-Cors==3.0.8",
     "pandas==1.0.1",
-    "numpy==1.18.1",
+    "numpy==1.22.0",
     "requests==2.24.0",
 ]
 
